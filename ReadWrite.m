@@ -33,7 +33,7 @@ global COMM_RXCORRUPT
 COMM_RXCORRUPT     = 7;
 
 
-loadlibrary('dynamixel','dxl_matlab.h');
+loadlibrary('dynamixel','dynamixel.h');
 libfunctions('dynamixel');
 
 %Default Setting
