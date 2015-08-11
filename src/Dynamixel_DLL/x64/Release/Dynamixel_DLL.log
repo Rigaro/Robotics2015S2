@@ -1,0 +1,39 @@
+﻿Build started 8/12/2015 7:34:08 AM.
+     1>Project "C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\Dynamixel_DLL.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\import /Zi /nologo /W3 /WX- /O2 /GL /D WIN64 /D NDEBUG /D _WINDOWS /D _USRDLL /D DYNAMIXEL_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MT /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gz /TC /errorReport:prompt ..\dxl_hal.c ..\dynamixel.c
+         dxl_hal.c
+     1>..\dxl_hal.c(31): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+         dynamixel.c
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1193,5): warning MSB8012: TargetPath(C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.dll) does not match the Linker's OutputFile property value (C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\dynamixel.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1195,5): warning MSB8012: TargetName(Dynamixel_DLL) does not match the Linker's OutputFile property value (dynamixel). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\dynamixel.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"..\..\import\dynamixel.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.lib" /MACHINE:X64 /DLL x64\Release\dxl_hal.obj
+         x64\Release\dynamixel.obj
+            Creating library C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.lib and object C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.exp
+         Generating code
+         Finished generating code
+         Dynamixel_DLL.vcxproj -> C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.dll
+       PostBuildEvent:
+         "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\..\..\VC\bin\mt.exe" -manifest "C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.dll.intermediate.manifest" -outputresource:"C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.dll";#2
+         copy x64\release\dynamixel.dll ..\..\bin\dynamixel.dll
+         copy x64\release\dynamixel.lib ..\..\import\dynamixel.lib
+         
+         
+         :VCEnd
+         '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\..\..\VC\bin\mt.exe"' is not recognized as an internal or external command,
+         operable program or batch file.
+                 1 file(s) copied.
+         The system cannot find the file specified.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppCommon.targets(132,5): error MSB3073: The command ""C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\..\..\VC\bin\mt.exe" -manifest "C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.dll.intermediate.manifest" -outputresource:"C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\x64\Release\Dynamixel_DLL.dll";#2
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppCommon.targets(132,5): error MSB3073: copy x64\release\dynamixel.dll ..\..\bin\dynamixel.dll
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppCommon.targets(132,5): error MSB3073: copy x64\release\dynamixel.lib ..\..\import\dynamixel.lib
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppCommon.targets(132,5): error MSB3073: 
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppCommon.targets(132,5): error MSB3073: 
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppCommon.targets(132,5): error MSB3073: :VCEnd" exited with code 1.
+     1>Done Building Project "C:\Users\Ricardo\Documents\Robotics2015S2\src\Dynamixel_DLL\Dynamixel_DLL.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.16
