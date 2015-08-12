@@ -12,3 +12,5 @@ References:
 -http://support.robotis.com/en/product/dynamixel/dxl_ax_main.htm
 
 -http://support.robotis.com/en/product/auxdevice/interface/usb2dxl_manual.htm
+
+-http://support.robotis.com/en/software/dynamixel_sdk/usb2dynamixel/window_communication_1/matlab.htm
