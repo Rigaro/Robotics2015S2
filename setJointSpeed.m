@@ -1,4 +1,4 @@
-function setJointAngle(desiredAngleDeg, motorID)
+function setJointSpeed(desiredSpeed, motorID)
 
 global ERRBIT_VOLTAGE
 ERRBIT_VOLTAGE     = 1;
@@ -37,34 +37,33 @@ loadlibrary('dynamixel','dynamixel.h');
 %libfunctions('dynamixel');
 
 %Instruction data constants
-P_GOAL_POSITION = 30;
+P_GOAL_SPEED = 32;
 DEFAULT_PORTNUM = 3; % com3
 DEFAULT_BAUDNUM = 1; % 1mbps
 
 %Variables
 int32 angleInt;
-angleInt = angleTo16int(desiredAngleDeg);
+rpmInt = rpmTo16int(desiredSpeed);
 int32 PresentPos;
 int32 CommStatus;
 
 %open device
 res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 if res == 1
-    %Write goal position
-    disp('Setting goal angle for Joint:');
-    disp(motorID);
-    calllib('dynamixel','dxl_write_word',motorID,P_GOAL_POSITION,angleInt);  
-    %Get motor status    
+    %Write motor speed
+    disp('Setting speed');
+    calllib('dynamixel','dxl_write_word',motorID,P_GOAL_SPEED,rpmInt);  
+    %Get motor status
     CommStatus = int32(calllib('dynamixel','dxl_get_result'));
     if CommStatus == COMM_RXSUCCESS
         PrintErrorCode();
     else
         PrintCommStatus(CommStatus);
-    end  
+    end    
 else
     disp('Failed to open USB2Dynamixel!');
 end
-disp('Success');
+disp('Done');
 %Close Device
 calllib('dynamixel','dxl_terminate');  
 unloadlibrary('dynamixel');
