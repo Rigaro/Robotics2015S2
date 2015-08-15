@@ -1,4 +1,4 @@
-function [Moving] = setJointAngle(desiredAngleDeg, motorID)
+function setJointAngle(desiredAngleDeg, motorID)
 
 global ERRBIT_VOLTAGE
 ERRBIT_VOLTAGE     = 1;
@@ -32,9 +32,9 @@ COMM_RXTIMEOUT     = 6;
 global COMM_RXCORRUPT
 COMM_RXCORRUPT     = 7;
 
-
+%load libraries
 loadlibrary('dynamixel','dynamixel.h');
-libfunctions('dynamixel');
+%libfunctions('dynamixel');
 
 %Instruction data constants
 P_GOAL_POSITION = 30;
@@ -44,11 +44,8 @@ DEFAULT_BAUDNUM = 1; % 1mbps
 P_Moving = 46;
 
 %Variables
-int32 GoalPos;
-GoalPos = [0 1023];
-%GoalPos = [0 4095] %for Ex Series
-int32 index;
-index = angleTo16int(desiredAngleDeg);
+int32 angleInt;
+angleInt = angleTo16int(desiredAngleDeg);
 int32 PresentPos;
 int32 Moving;
 int32 CommStatus;
@@ -56,18 +53,21 @@ int32 CommStatus;
 %open device
 res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 if res == 1
-    disp('Succeed to open USB2Dynamixel!');
     %Write goal position
-    calllib('dynamixel','dxl_write_word',motorID,P_GOAL_POSITION,GoalPos(index));  
+    calllib('dynamixel','dxl_write_word',motorID,P_GOAL_POSITION,angleInt);  
     Moving = 1;
+    disp('Moving');
     %Wait for movement end
     while Moving == 1
         %Read Present position
-        PresentPos = int32(calllib('dynamixel','dxl_read_word',motorID,P_PRESENT_POSITION));
+        %PresentPosInt = int32(calllib('dynamixel','dxl_read_word',motorID,P_PRESENT_POSITION));
         CommStatus = int32(calllib('dynamixel','dxl_get_result'));
         if CommStatus == COMM_RXSUCCESS
-            Position =[GoalPos(index) PresentPos];
-            disp(motorID + ': ' + Position);
+            %Display desired and present positions
+            %PresentPos = intToAngle(PresentPosInt);
+            %Position =[desiredAngleDeg PresentPos];
+            %disp('.');
+            %disp(Position);
             PrintErrorCode();
         else
             PrintCommStatus(CommStatus);
@@ -87,7 +87,7 @@ if res == 1
 else
     disp('Failed to open USB2Dynamixel!');
 end
-
+disp('Done');
 %Close Device
 calllib('dynamixel','dxl_terminate');  
 unloadlibrary('dynamixel');
