@@ -51,7 +51,8 @@ int32 CommStatus;
 res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 if res == 1
     %Write motor speed
-    disp('Setting speed');
+    disp('Setting speed for Joint:');
+    disp(motorID);
     calllib('dynamixel','dxl_write_word',motorID,P_GOAL_SPEED,rpmInt);  
     %Get motor status
     CommStatus = int32(calllib('dynamixel','dxl_get_result'));
@@ -63,7 +64,7 @@ if res == 1
 else
     disp('Failed to open USB2Dynamixel!');
 end
-disp('Done');
+disp('Success');
 %Close Device
 calllib('dynamixel','dxl_terminate');  
 unloadlibrary('dynamixel');
