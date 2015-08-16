@@ -22,7 +22,7 @@ function varargout = menuGUI(varargin)
 
 % Edit the above text to modify the response to help menuGUI
 
-% Last Modified by GUIDE v2.5 16-Aug-2015 18:04:30
+% Last Modified by GUIDE v2.5 16-Aug-2015 18:24:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -97,3 +97,11 @@ function exit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(menuGUI);
+
+
+% --- Executes on button press in kineDemo.
+function kineDemo_Callback(hObject, eventdata, handles)
+% hObject    handle to kineDemo (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+inverse_kinematics_demo();
