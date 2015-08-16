@@ -51,8 +51,7 @@ int32 CommStatus;
 res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 if res == 1
     %Write goal position
-    disp('Setting goal angle for Joint:');
-    disp(motorID);
+    disp(['Setting goal angle for Joint: ' num2str(motorID) '. to: ' num2str(desiredAngleDeg) ' Deg.']);
     calllib('dynamixel','dxl_write_word',motorID,P_GOAL_POSITION,angleInt);  
     %Get motor status    
     CommStatus = int32(calllib('dynamixel','dxl_get_result'));

@@ -1,4 +1,4 @@
 function runRobot()
 %start gui
-sliderGUI();
+menuGUI();
 end
