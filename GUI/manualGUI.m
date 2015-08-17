@@ -22,7 +22,7 @@ function varargout = manualGUI(varargin)
 
 % Edit the above text to modify the response to help manualGUI
 
-% Last Modified by GUIDE v2.5 16-Aug-2015 17:58:10
+% Last Modified by GUIDE v2.5 17-Aug-2015 14:30:35
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -520,11 +520,11 @@ function goToPos_Callback(hObject, eventdata, handles)
 global jSpeed
 global jAngle
 %Change to 1:7 when all motors are activated
-for i=1:1
+for i=1:3
     setJointSpeed(jSpeed(i),i);
 end
 %Change to 1:7 when all motors are activated
-for i=1:1
+for i=1:3
     setJointAngle(jAngle(i),i);
 end
 
