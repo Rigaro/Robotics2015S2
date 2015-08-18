@@ -8,6 +8,11 @@ close all
 %initialise design parameters
 [design_params, motor_origins, e_eff] = init();
 
+%origin of robot 0 frame with respect to world frame
+robot_origin = [0; -0.378375; 0.13];
+%transformation of robot 0 frame with respect to world frame
+originT = [eye(3), robot_origin; 0 0 0 1];
+
 %number of motors
 N = size(design_params, 1);
 
@@ -37,9 +42,6 @@ for t = 1:sample_size:n_periods*360
     %         delete(e_effplot)
     %     end
     
-    %'orthogonal' view
-    view(3);
-    
     %program robot here========================
     
     %     %helix-shaped parametric function for end-effector position
@@ -60,11 +62,11 @@ for t = 1:sample_size:n_periods*360
         step = step + 1;
     end
     %drawing on a constant y wall
-    y = 0.3;
+    y = 0.153375;
     %scaling and shifting
-    z = z + 800;
-    z = z/4000;
-    x = x/4000;
+    z = z - 100;
+    z = z/9000;
+    x = x/9000;
     
     %position
     r_pos = [x; y; z];
@@ -87,20 +89,21 @@ for t = 1:sample_size:n_periods*360
     %compute transformation matrices using dh table
     T = transformation_matrices(dh_table);
     
+    plot_frame
     %plot the motors
     for i = 1:N
-        cynplot(i) = plot_cylinder(T(:, :, i), [0; 0; motor_origins(i)]);
+        cynplot(i) = plot_cylinder(originT*T(:, :, i), [0; 0; motor_origins(i)]);
     end
     %plot the linkages between motors
     for i = 1:(N - 1)
-        a = T(:, :, i)*[0; 0; motor_origins(i); 1];
-        b = T(:, :, i + 1)*[0; 0; motor_origins(i + 1); 1];
+        a = originT*T(:, :, i)*[0; 0; motor_origins(i); 1];
+        b = originT*T(:, :, i + 1)*[0; 0; motor_origins(i + 1); 1];
         hold on
         linkplot(i) = plot3([a(1) b(1)], [a(2) b(2)], [a(3) b(3)]);
     end
     %plot the end-effector
-    a = T(:, :, N)*[0; 0; motor_origins(N); 1];
-    b = T(:, :, N)*[0; 0; motor_origins(N) + e_eff; 1];
+    a = originT*T(:, :, N)*[0; 0; motor_origins(N); 1];
+    b = originT*T(:, :, N)*[0; 0; motor_origins(N) + e_eff; 1];
     e_effplot = plot3([a(1) b(1)], [a(2) b(2)], [a(3) b(3)]);
     
     %stores the past trajectory
@@ -115,8 +118,10 @@ for t = 1:sample_size:n_periods*360
     %configure unit aspect
     daspect([1 1 1])
     %set box bounds
-    axis([-0.6, 0.6, -0.6, 0.6, -0.6, 0.6])
-    %allows more things to be plotted
+    axis([-0.6, 0.6, -0.6, 0.6, 0, 1])
+    %'orthogonal' view
+    view(3);
+    %draws now
     drawnow
     
     %use the current joint displacement as a starting guess for the next
