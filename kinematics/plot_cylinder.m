@@ -6,8 +6,8 @@ function cynplot = plot_cylinder(tm, motor_origin)
 %the figure
 
 %set height and diameter of cylinder
-height = 0.05;
-diameter = 0.03;
+height = 0.035;
+diameter = 0.0164;
 
 %generate cylinder
 [cynx, cyny, cynz] = cylinder(diameter/2);
