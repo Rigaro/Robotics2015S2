@@ -152,7 +152,7 @@ function j4angle_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 j4angle = get(hObject,'Value');
-%setJointAngle(j4angle, 4);
+setJointAngle(j4angle, 4);
 
 % --- Executes during object creation, after setting all properties.
 function j4angle_CreateFcn(hObject, eventdata, handles)
@@ -175,7 +175,7 @@ function j5angle_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 j5angle = get(hObject,'Value');
-%setJointAngle(j5angle, 5);
+setJointAngle(j5angle, 5);
 
 % --- Executes during object creation, after setting all properties.
 function j5angle_CreateFcn(hObject, eventdata, handles)
@@ -198,7 +198,7 @@ function j6angle_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 j6angle = get(hObject,'Value');
-%setJointAngle(j6angle, 6);
+setJointAngle(j6angle, 6);
 
 % --- Executes during object creation, after setting all properties.
 function j6angle_CreateFcn(hObject, eventdata, handles)
@@ -221,7 +221,7 @@ function j7angle_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 j7angle = get(hObject,'Value');
-%setJointAngle(j7angle, 7);
+setJointAngle(j7angle, 7);
 
 % --- Executes during object creation, after setting all properties.
 function j7angle_CreateFcn(hObject, eventdata, handles)
@@ -313,7 +313,7 @@ function j4speed_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 j4speed = get(hObject,'Value');
-%setJointSpeed(j4speed, 4);
+setJointSpeed(j4speed, 4);
 
 % --- Executes during object creation, after setting all properties.
 function j4speed_CreateFcn(hObject, eventdata, handles)
@@ -359,7 +359,7 @@ function j6speed_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 j6speed = get(hObject,'Value');
-%setJointSpeed(j6speed, 6);
+setJointSpeed(j6speed, 6);
 
 % --- Executes during object creation, after setting all properties.
 function j6speed_CreateFcn(hObject, eventdata, handles)
@@ -382,7 +382,7 @@ function j7speed_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 j7speed = get(hObject,'Value');
-%setJointSpeed(j7speed, 7);
+setJointSpeed(j7speed, 7);
 
 % --- Executes during object creation, after setting all properties.
 function j7speed_CreateFcn(hObject, eventdata, handles)

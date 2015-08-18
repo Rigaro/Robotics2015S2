@@ -519,14 +519,12 @@ function goToPos_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global jSpeed
 global jAngle
-%Change to 1:7 when all motors are activated
-for i=1:3
+% Sets motors speed
+for i=1:7
     setJointSpeed(jSpeed(i),i);
 end
-%Change to 1:7 when all motors are activated
-for i=1:3
-    setJointAngle(jAngle(i),i);
-end
+% Sends desired angles information
+syncRobotAngles(jAngle);
 
 
 % --- Executes on button press in pushbutton3.

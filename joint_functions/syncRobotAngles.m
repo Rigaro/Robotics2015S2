@@ -1,4 +1,4 @@
-function syncJointAngles(desiredAngles, motorID)
+function syncRobotAngles(desiredAngles)
 
 global ERRBIT_VOLTAGE
 ERRBIT_VOLTAGE     = 1;
@@ -37,6 +37,8 @@ loadlibrary('dynamixel','dynamixel.h');
 %libfunctions('dynamixel');
 
 %Instruction data constants
+BROADCAST_ID    = 254;
+INST_SYNC_WRITE		=131;
 P_GOAL_POSITION = 30;
 DEFAULT_PORTNUM = 3; % com3
 DEFAULT_BAUDNUM = 1; % 1mbps
@@ -44,7 +46,7 @@ NUM_ACTUATOR = 7;
 
 %Variables
 int32 iDesAngles;
-iDesAngles = zeros([7, 0]);
+iDesAngles = zeros([7, 1]);
 int32 PresentPos;
 int32 CommStatus;
 id = zeros([7, 1]);
