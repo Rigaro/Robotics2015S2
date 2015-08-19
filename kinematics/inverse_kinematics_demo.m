@@ -1,9 +1,10 @@
 %This script demos inverse kinematics for a 7 DOF robot doing a task
 %works using an end-effector pose input
 
-clc
-clear all
-close all
+%clc
+%clear all
+%close all
+global robotFig
 
 %initialise design parameters
 [design_params, motor_origins, e_eff] = init();
@@ -34,7 +35,15 @@ for t = 1:sample_size:n_periods*360
     
     %two options for clearing screen:
     %1. clears figure but still keeps certain settings
-    clf('reset')
+    %   Removed 'reset' because deletes custom callback for close.
+    timerValid = isvalid(robotFig);
+    if (timerValid ~= 0)
+        figure(robotFig)
+    else
+        disp('Error: Robot GUI was closed. Stopping demo.')
+        break;
+    end
+    clf
     %2. clear the previous plot. this method seems to be slower
     %     if (t > 1)
     %         delete(cynplot)

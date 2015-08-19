@@ -104,4 +104,21 @@ function kineDemo_Callback(hObject, eventdata, handles)
 % hObject    handle to kineDemo (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-inverse_kinematics_demo();
+
+% Stops timer before launching Kinematics demo.
+global updateTimer
+global robotFig
+timerValid = isvalid(updateTimer);
+if (timerValid ~= 0)
+    if strcmp(get(updateTimer, 'Running'), 'on')
+        stop(updateTimer);
+    end
+end
+% Launches demo only if robot window is available, otherwise 
+% relaunches robotGUI
+timerValid = isvalid(robotFig);
+if (timerValid ~= 0)
+    inverse_kinematics_demo();
+else
+    robotGUI
+end
