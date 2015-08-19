@@ -26,12 +26,19 @@ global updateTimer
 % Necessary to provide this function to prevent timer callback
 % from causing an error after GUI code stops executing.
 % Before exiting, if the timer is running, stop it.
-if strcmp(get(updateTimer, 'Running'), 'on')
-    stop(updateTimer);
+timerValid = isvalid(updateTimer);
+if (timerValid ~= 0)
+    if strcmp(get(updateTimer, 'Running'), 'on')
+        stop(updateTimer);
+    end
+    % Destroy timer
+    delete(updateTimer);
 end
-% Destroy timer
-delete(updateTimer)
-% END USER CODE
+%Close Device
+if(libisloaded('dynamixel'))
+    calllib('dynamixel','dxl_terminate');  
+    unloadlibrary('dynamixel');
+end
 
 % Hint: delete(hObject) closes the figure
 delete(hObject);
