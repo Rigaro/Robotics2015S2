@@ -6,7 +6,9 @@ updateTimer = timer('BusyMode', 'drop', ...
                       'Period' ,2, ...
                       'TimerFcn', {@(~,~)updateDisplay});
 
-figure('CloseRequestFcn',@robotGUI_CloseRequestFcn)
+global robotFig
+robotFig = figure('CloseRequestFcn',@robotGUI_CloseRequestFcn);
+set(robotFig, 'Name', 'Robot Fig');
 plotRobot(zeros([7, 1]));
 % Only start timer if it is not running
 if strcmp(get(updateTimer, 'Running'), 'off')
@@ -14,10 +16,11 @@ if strcmp(get(updateTimer, 'Running'), 'off')
 end
 
 function updateDisplay()
-robotAngles = offsetSimJoint(readRobotAngles());
+%robotAngles = offsetSimJoint(readRobotAngles());
+robotAngles = zeros([7,1]);
 plotRobot(robotAngles);
 
-% --- Executes when user attempts to close figure1.
+% --- Executes when user attempts to close figure.
 function robotGUI_CloseRequestFcn(hObject, eventdata, handles)
 % hObject    handle to figure1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -39,6 +42,6 @@ if(libisloaded('dynamixel'))
     calllib('dynamixel','dxl_terminate');  
     unloadlibrary('dynamixel');
 end
-
+disp('robot');
 % Hint: delete(hObject) closes the figure
 delete(hObject);

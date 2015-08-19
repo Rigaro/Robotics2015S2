@@ -32,9 +32,10 @@ COMM_RXTIMEOUT     = 6;
 global COMM_RXCORRUPT
 COMM_RXCORRUPT     = 7;
 
-%load libraries
-loadlibrary('dynamixel','dynamixel.h');
-%libfunctions('dynamixel');
+%Check if library is not loaded, and load if not.
+if(~libisloaded('dynamixel'))
+    loadlibrary('dynamixel','dynamixel.h');
+end
 
 %Instruction data constants
 P_GOAL_SPEED = 32;
@@ -64,9 +65,11 @@ else
     disp('Failed to open USB2Dynamixel!');
 end
 disp('Success');
-%Close Device
-calllib('dynamixel','dxl_terminate');  
-unloadlibrary('dynamixel');
+%Close Device if library is loaded.
+if(libisloaded('dynamixel'))
+    calllib('dynamixel','dxl_terminate');  
+    unloadlibrary('dynamixel');
+end
 
 
 %Print commuication result

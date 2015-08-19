@@ -41,6 +41,11 @@ DEFAULT_BAUDNUM = 1; % 1mbps
 int32 jointAngleInt;
 int32 CommStatus;
 
+%Check if library is not loaded, and load if not.
+if(~libisloaded('dynamixel'))
+    loadlibrary('dynamixel','dynamixel.h');
+end
+
 %open device
 res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 if res == 1
@@ -54,6 +59,12 @@ if res == 1
     end
 else
     disp('Failed to open USB2Dynamixel!');
+end
+
+%Close Device when library is loaded
+if(libisloaded('dynamixel'))
+    calllib('dynamixel','dxl_terminate');  
+    unloadlibrary('dynamixel');
 end
 
 %Print commuication result

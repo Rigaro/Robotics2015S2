@@ -13,6 +13,9 @@ function plotRobot(jd)
     %compute transformation matrices using dh table
     T = transformation_matrices(dh_table);
 
+    global robotFig
+    figure(robotFig);
+    
     %plot the motors
     for i = 1:N
         cynplot(i) = plot_cylinder(T(:, :, i), [0; 0; motor_origins(i)]);
@@ -35,6 +38,7 @@ function plotRobot(jd)
     axis([-0.6, 0.6, -0.6, 0.6, -0.2, 0.6])
     %'orthogonal' view
     view(3);
+    figure(robotFig);
     %draws now
     drawnow
 

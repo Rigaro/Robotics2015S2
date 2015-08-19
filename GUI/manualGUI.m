@@ -520,9 +520,7 @@ function goToPos_Callback(hObject, eventdata, handles)
 global jSpeed
 global jAngle
 % Sets motors speed
-for i=1:7
-    setJointSpeed(jSpeed(i),i);
-end
+syncRobotSpeeds(jSpeed);
 % Sends desired angles information
 syncRobotAngles(jAngle);
 

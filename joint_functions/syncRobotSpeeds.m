@@ -1,4 +1,4 @@
-function setJointAngle(desiredAngleDeg, motorID)
+function syncRobotSpeeds(desiredSpeeds)
 
 global ERRBIT_VOLTAGE
 ERRBIT_VOLTAGE     = 1;
@@ -38,29 +38,52 @@ if(~libisloaded('dynamixel'))
 end
 
 %Instruction data constants
-P_GOAL_POSITION = 30;
+BROADCAST_ID    = 254;
+INST_SYNC_WRITE		=131;
+P_GOAL_SPEED = 32;
 DEFAULT_PORTNUM = 3; % com3
 DEFAULT_BAUDNUM = 1; % 1mbps
+NUM_ACTUATOR = 7;
 
 %Variables
-int32 angleInt;
-angleInt = angleTo16int(desiredAngleDeg);
+int32 iDesSpeeds;
+iDesSpeeds = zeros([7, 1]);
 int32 PresentPos;
 int32 CommStatus;
+id = zeros([7, 1]);
+
+% Initialize id
+for i = 1:1:NUM_ACTUATOR
+    id(i) = i;
+    iDesSpeeds(i) = speedTo16int(desiredSpeeds(i));
+end
 
 %open device
 res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 if res == 1
-    %Write goal position
-    disp(['Setting goal angle for Joint: ' num2str(motorID) '. to: ' num2str(desiredAngleDeg) ' Deg.']);
-    calllib('dynamixel','dxl_write_word',motorID,P_GOAL_POSITION,angleInt);  
-    %Get motor status    
+    % Create syncwrite packet by broadcasting a syncwrite
+    % instruction and then separating motor packets with IDs.
+    calllib('dynamixel','dxl_set_txpacket_id',BROADCAST_ID);
+    calllib('dynamixel','dxl_set_txpacket_instruction',INST_SYNC_WRITE);
+    calllib('dynamixel','dxl_set_txpacket_parameter',0,P_GOAL_SPEED);
+    calllib('dynamixel','dxl_set_txpacket_parameter',1,2);
+    for i = 0:1:NUM_ACTUATOR-1
+        calllib('dynamixel','dxl_set_txpacket_parameter',2+3*i,id(i+1));
+        low = calllib('dynamixel','dxl_get_lowbyte',iDesSpeeds(i+1));
+        calllib('dynamixel','dxl_set_txpacket_parameter',2+3*i+1,low);
+        high = calllib('dynamixel','dxl_get_highbyte',iDesSpeeds(i+1));
+        calllib('dynamixel','dxl_set_txpacket_parameter',2+3*i+2,high);
+    end
+    % Packet tail (packet length)
+    calllib('dynamixel','dxl_set_txpacket_length',(2+1)*NUM_ACTUATOR+4);
+    % Transmit packet and verify
+    calllib('dynamixel','dxl_txrx_packet');
     CommStatus = int32(calllib('dynamixel','dxl_get_result'));
     if CommStatus == COMM_RXSUCCESS
         PrintErrorCode();
     else
         PrintCommStatus(CommStatus);
-    end  
+    end
 else
     disp('Failed to open USB2Dynamixel!');
 end
@@ -70,6 +93,7 @@ if(libisloaded('dynamixel'))
     calllib('dynamixel','dxl_terminate');  
     unloadlibrary('dynamixel');
 end
+
 
 %Print commuication result
 function [] = PrintErrorCode()

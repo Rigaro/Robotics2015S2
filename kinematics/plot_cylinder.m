@@ -41,6 +41,9 @@ cynz = [points1(3, :);
 %determine motor origin in frame 0
 origin = tm*[motor_origin; 1];
 
+%Plot in robot window
+global robotFig
+figure(robotFig);
 %%plots the translated and rotated cylinder.
 %%mesh seems to work the best. fill3 is slow
 hold on
