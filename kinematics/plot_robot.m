@@ -12,6 +12,10 @@ dh_table = [design_params, jd];
 %compute transformation matrices using dh table
 T = transformation_matrices(dh_table);
 
+%plots in figure 3 to avoid overwriting
+figure(3)
+clf('reset')
+
 %plot the motors
 for i = 1:N
     cynplot(i) = plot_cylinder(T(:, :, i), [0; 0; motor_origins(i)]);
