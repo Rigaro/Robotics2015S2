@@ -39,11 +39,17 @@ void loop() {
   // Will assume bar is in gripper zone
   if(gripped1==FALSE){
     runMotor(1,1,FORWARD);
+  }else if(gripped1==TRUE){
+    runMotor(1,COUNTER_FOR_UNDO,BACKWARD);
   }
   
-  if(gripped1==TRUE){
-    runMotor(1,COUNTER_FOR_UNDO,BACKWARD);
-  }  
+  //Updating gripped status
+  gripped1=isSecure(void);
+  
+  //Let's leave it gripped for a little while for demonstration
+  if(gripped1==TRUE)
+    delay(1000);
+  }
 }
 
 //Just a convenient function to encompass everything required to run the motor for a set time
