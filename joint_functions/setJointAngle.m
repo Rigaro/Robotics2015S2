@@ -61,10 +61,10 @@ if res == 1
     else
         PrintCommStatus(CommStatus);
     end  
+    disp('Success');
 else
     disp('Failed to open USB2Dynamixel!');
 end
-disp('Success');
 %Close Device if library is loaded.
 if(libisloaded('dynamixel'))
     calllib('dynamixel','dxl_terminate');  

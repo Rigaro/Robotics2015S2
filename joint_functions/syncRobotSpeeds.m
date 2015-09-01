@@ -55,7 +55,7 @@ id = zeros([7, 1]);
 % Initialize id
 for i = 1:1:NUM_ACTUATOR
     id(i) = i;
-    iDesSpeeds(i) = speedTo16int(desiredSpeeds(i));
+    iDesSpeeds(i) = rpmTo16int(desiredSpeeds(i));
 end
 
 %open device
@@ -84,10 +84,10 @@ if res == 1
     else
         PrintCommStatus(CommStatus);
     end
+    disp('Success');
 else
     disp('Failed to open USB2Dynamixel!');
 end
-disp('Success');
 %Close Device if library is loaded.
 if(libisloaded('dynamixel'))
     calllib('dynamixel','dxl_terminate');  

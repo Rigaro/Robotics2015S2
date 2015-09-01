@@ -10,7 +10,14 @@ updateTimer = timer('BusyMode', 'drop', ...
 global robotFig
 robotFig = figure('CloseRequestFcn',@robotGUI_CloseRequestFcn);
 set(robotFig, 'Name', 'Robot Fig');
-plotRobot(zeros([7, 1]));
+set(robotFig, 'MenuBar', 'none');
+global robotAngles
+global robotPos
+global robotOri
+robotPos = zeros([3,1]);
+robotOri = zeros([3,1]);
+robotAngles = zeros([7,1]);
+plotRobot(robotAngles);
 % Only start timer if it is not running
 if strcmp(get(updateTimer, 'Running'), 'off')
     start(updateTimer);
@@ -18,9 +25,18 @@ end
 
 % Timer callback function that draws robot and updates status.
 function updateDisplay()
-robotAngles = offsetSimJoint(readRobotAngles());
-%robotAngles = zeros([7,1]);
+global robotAngles
+global dmxStatus
+global robotPos
+global robotOri
+if (dmxStatus == 1)
+    robotAngles = offsetSimJoint(readRobotAngles());
+else
+    robotAngles = zeros([7,1]);
+end
 plotRobot(robotAngles);
+[robotPos, robotOri] = forward_kinematics(robotAngles); 
+plotCoord();
 
 % --- Executes when user attempts to close figure.
 % Overrides figure close function to include timer stop and

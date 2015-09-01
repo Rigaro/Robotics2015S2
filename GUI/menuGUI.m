@@ -22,7 +22,7 @@ function varargout = menuGUI(varargin)
 
 % Edit the above text to modify the response to help menuGUI
 
-% Last Modified by GUIDE v2.5 16-Aug-2015 18:24:06
+% Last Modified by GUIDE v2.5 01-Sep-2015 18:57:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -99,9 +99,9 @@ function exit_Callback(hObject, eventdata, handles)
 delete(menuGUI);
 
 
-% --- Executes on button press in kineDemo.
-function kineDemo_Callback(hObject, eventdata, handles)
-% hObject    handle to kineDemo (see GCBO)
+% --- Executes on button press in pathDemo.
+function pathDemo_Callback(hObject, eventdata, handles)
+% hObject    handle to pathDemo (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -122,3 +122,12 @@ if (timerValid ~= 0)
 else
     robotGUI
 end
+
+
+% --- Executes on button press in iKineDemo.
+function iKineDemo_Callback(hObject, eventdata, handles)
+% hObject    handle to iKineDemo (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+iKineGUI();
+delete(menuGUI);

@@ -87,7 +87,8 @@ ground = [0.6 0.6 0;
     0.6 0.6 0];
 
 global robotFig
-figure(robotFig);
+%figure(robotFig);
+set(groot,'CurrentFigure',robotFig);
 plot3(top_rect(:, 1), top_rect(:, 2), top_rect(:, 3), 'black', 'Linewidth', 3)
 hold on
 plot3(bot_rect(:, 1), bot_rect(:, 2), bot_rect(:, 3), 'black', 'Linewidth', 3)

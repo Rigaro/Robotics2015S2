@@ -1,7 +1,8 @@
 function plotRobot(jd)
     %takes joint displacement as an input and plots the robot
     global robotFig
-    figure(robotFig);    
+    %figure(robotFig);    
+    set(groot,'CurrentFigure',robotFig);
     clf
 
     %initialise design parameters
@@ -44,10 +45,12 @@ function plotRobot(jd)
     axis([-0.6, 0.6, -0.6, 0.6, 0, 1])
     %'orthogonal' view
     view(3);
-    figure(robotFig);
+    plotCoord();
+    %figure(robotFig);    
+    set(groot,'CurrentFigure',robotFig);
     %draws now
     drawnow
-
+    
     function [design_params, motor_origins, e_eff] = init()
         %call this to initialise the variables which define the structure of the
         %robot

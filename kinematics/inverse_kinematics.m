@@ -4,7 +4,7 @@ function jd_opt = inverse_kinematics(pose, jd0)
 
 %set up number of iterations to optimise
 %LargeScale uses line-search rather than trust-region-reflective
-options = optimset('MaxFunEvals', 80, 'LargeScale', 'off');
+options = optimset('MaxFunEvals', 80, 'LargeScale', 'off', 'TolFun',1e-8);
 
 %Quasi-newton optimisation (unconstrained minimum)
 jd_opt = fminunc(@sumsqr, jd0, options);
@@ -18,7 +18,7 @@ jd_opt = fminunc(@sumsqr, jd0, options);
         %desired position
         des_pos = pose(1:3);
         %computed pose
-        [comp_pos, comp_ori] = end_effector_pose(jd);
+        [comp_pos, comp_ori] = forward_kinematics(jd);
         
         %check whether an orientation has been specified
         if (numel(pose) > 3)

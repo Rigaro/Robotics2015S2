@@ -1,5 +1,11 @@
 function syncRobotAngles(desiredAngles)
 
+% Check that desired angles are valid
+jointLim = checkJointLim(desiredAngles);
+if(jointLim == 0)
+   error('Invalid desired joint angles'); 
+end
+
 global ERRBIT_VOLTAGE
 ERRBIT_VOLTAGE     = 1;
 global ERRBIT_ANGLE 
@@ -84,10 +90,10 @@ if res == 1
     else
         PrintCommStatus(CommStatus);
     end
+    disp('Success');
 else
     disp('Failed to open USB2Dynamixel!');
 end
-disp('Success');
 %Close Device if library is loaded.
 if(libisloaded('dynamixel'))
     calllib('dynamixel','dxl_terminate');  
