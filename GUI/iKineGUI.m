@@ -229,10 +229,14 @@ function goToPos_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global desSpeed
 global desLoc
-%Fast inverse kinematics
+%global robotAngles
+%Opti iKine
+%desAngles = inverse_kinematics(desLoc,robotAngles);
+%Fast iKine
 desAngles = fast_ik(desLoc);
 %Change desired angles to real motor angles
-motAngles = offsetMotorJoint(desAngles);
+motAngles = offsetMotorJoint(desAngles)
+desAngles
 %Update speed and angles.
 syncRobotSpeeds(desSpeed);
 syncRobotAngles(motAngles);

@@ -107,7 +107,7 @@ for t = 1:sample_size:n_periods*360
     %configure unit aspect
     daspect([1 1 1])
     %set box bounds
-    axis([-0.6, 0.6, -0.6, 0.6, -0.6, 0.6])
+    axis([-0.2, 0.2, -0.2, 0.2, -0.1, 0.4])
     %allows more things to be plotted
     drawnow
     

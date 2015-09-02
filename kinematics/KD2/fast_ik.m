@@ -35,11 +35,10 @@ q2 = 2*atan2(-d5*sin(q4) - sqrt((d3+d5*cos(q4))^2 + (-d5*sin(q4))^2 - rOW(3)^2),
 
 q1 = atan2(-rOW(2), -rOW(1));
 
-T04 = [[ (-0.0833)*cos(q1)*cos(q2) + 0.9965*cos(q1)*sin(q2), 0.9965*cos(q1)*cos(q2) - (-0.0833)*cos(q1)*sin(q2), -sin(q1), 0.117*cos(q1)*sin(q2)];
-[ (-0.0833)*cos(q2)*sin(q1) + 0.9965*sin(q1)*sin(q2), 0.9965*cos(q2)*sin(q1) - (-0.0833)*sin(q1)*sin(q2),  cos(q1), 0.117*sin(q1)*sin(q2)];
-[                 0.9965*cos(q2) - (-0.0833)*sin(q2),               - (-0.0833)*cos(q2) - 0.9965*sin(q2),        0,         0.117*cos(q2)];
-[                 0,                  0,        0,                          1]];
-
+T04 = [[ cos(q1)*cos(q2)*cos(q4) - cos(q1)*sin(q2)*sin(q4), - cos(q1)*cos(q2)*sin(q4) - cos(q1)*cos(q4)*sin(q2), -sin(q1), 0.102*cos(q1)*sin(q2)];
+[ cos(q2)*cos(q4)*sin(q1) - sin(q1)*sin(q2)*sin(q4), - cos(q2)*sin(q1)*sin(q4) - cos(q4)*sin(q1)*sin(q2),  cos(q1), 0.102*sin(q1)*sin(q2)];
+[               - cos(q2)*sin(q4) - cos(q4)*sin(q2),                   sin(q2)*sin(q4) - cos(q2)*cos(q4),        0,         0.102*cos(q2)];
+[                                                 0,                                                   0,        0,                        1]];
 T4E_n = T04\TOE;
 
 q6 = acos(-T4E_n(2, 3));
@@ -48,4 +47,4 @@ q5 = atan2(T4E_n(3, 3), T4E_n(1, 3));
 
 q3 = 0;
 
-jd = rad2deg([q1; q2; q3; q4; q5; q6; q7]);
+jd = mod(rad2deg([q1; q2; q3; q4; q5; q6; q7]) + 180, 360) - 180;
