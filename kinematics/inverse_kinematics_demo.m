@@ -7,7 +7,7 @@
 global robotFig
 
 %initialise design parameters
-[design_params, motor_origins, e_eff] = init();
+[design_params, motor_origins, e_eff] = initd();
 
 %origin of robot 0 frame with respect to world frame
 robot_origin = [0; -0.378375; 0.13];
@@ -96,7 +96,7 @@ for t = 1:sample_size:n_periods*360
     %construct dh table
     dh_table = [design_params, jd_opt];
     %compute transformation matrices using dh table
-    T = transformation_matrices(dh_table);
+    T = transformation_matricesd(dh_table);
     
     plot_frame
     %plot the motors

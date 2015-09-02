@@ -1,16 +1,16 @@
-function T = transformation_matrices(dh_params)
+function T = transformation_matricesd(dh_params)
 
 %implements the DH table and returns all transformation matrices with
 %respect to frame 0
-%radians version
+%degrees version
 
 T_prev = eye(4);
 for i = 1:size(dh_params, 1)
-    Rx = [rotx(dh_params(i, 1)), [0; 0; 0];
+    Rx = [rotxd(dh_params(i, 1)), [0; 0; 0];
         [0 0 0 1]];
     Dx = [eye(3), [dh_params(i, 2); 0; 0];
         [0 0 0 1]];
-    Rz = [rotz(dh_params(i, 4)), [0; 0; 0];
+    Rz = [rotzd(dh_params(i, 4)), [0; 0; 0];
         [0 0 0 1]];
     Dz = [eye(3), [0; 0; dh_params(i, 3)];
         [0 0 0 1]];
@@ -18,23 +18,21 @@ for i = 1:size(dh_params, 1)
     T_prev = T(:, :, i);
 end
 
-    function rot_mat = rotx(theta)
+    function rot_mat = rotxd(theta)
         %returns the rotation matrix corresponding to a rotation about the x-axis
-        %by theta radians
-        %overrides the degree-input function in newer versions
+        %by theta degrees
         
         rot_mat = [1 0 0;
-            0 cos(theta) -sin(theta);
-            0 sin(theta) cos(theta)];
+            0 cosd(theta) -sind(theta);
+            0 sind(theta) cosd(theta)];
     end
 
-    function rot_mat = rotz(theta)
+    function rot_mat = rotzd(theta)
         %returns the rotation matrix corresponding to a rotation about the y-axis
-        %by theta radians
-        %overrides the degrees function in newer versions
+        %by theta degrees
         
-        rot_mat = [cos(theta) -sin(theta) 0;
-            sin(theta) cos(theta) 0;
+        rot_mat = [cosd(theta) -sind(theta) 0;
+            sind(theta) cosd(theta) 0;
             0 0 1];
     end
 

@@ -1,5 +1,7 @@
 %This script demos inverse kinematics for a 7 DOF robot doing a task
 %works using an end-effector pose input
+%Fast inverse kinematics
+%does a spiral
 
 clc
 clear all

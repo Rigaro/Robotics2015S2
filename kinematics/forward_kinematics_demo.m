@@ -6,7 +6,7 @@ clear all
 close all
 
 %initialise design parameters
-[design_params, motor_origins, e_eff] = init();
+[design_params, motor_origins, e_eff] = initd();
 
 %number of motors
 N = size(design_params, 1);
@@ -42,7 +42,7 @@ for t = 0:4:n_periods*360
     dh_table = [design_params, joint_displacement];
     
     %compute transformation matrices from dh table
-    T = transformation_matrices(dh_table);
+    T = transformation_matricesd(dh_table);
     
     %plot the motors
     for i = 1:N
