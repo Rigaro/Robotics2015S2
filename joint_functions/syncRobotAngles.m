@@ -1,10 +1,10 @@
 function syncRobotAngles(desiredAngles)
 
 % Check that desired angles are valid
-jointLim = checkJointLim(desiredAngles);
-if(jointLim == 0)
-   error('Invalid desired joint angles'); 
-end
+%jointLim = checkJointLim(desiredAngles);
+%if(jointLim == 0)
+%   error('Invalid desired joint angles'); 
+%end
 
 global ERRBIT_VOLTAGE
 ERRBIT_VOLTAGE     = 1;
