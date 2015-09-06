@@ -3,13 +3,13 @@ function [pos, orientation] = forward_kinematics(jd)
 %end effector
 
 %initialise design variables
-[design_params, motor_origins, e_eff] = initd();
+[design_params, motor_origins, e_eff] = init(0);
 
 %construct DH table
 dh_table = [design_params, jd];
 
 %compute transformation matrices from dh table
-T = transformation_matricesd(dh_table);
+T = transformation_matrices(dh_table, 0);
 
 %counts number of transformation matrices
 N = size(T, 3);

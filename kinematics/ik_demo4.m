@@ -1,14 +1,12 @@
 %This script demos inverse kinematics for a 7 DOF robot doing a task
 %works using an end-effector pose input
-%Fast inverse kinematics
-%draws a torchic
 
 clc
 clear all
 close all
 
 %initialise design parameters
-[design_params, motor_origins, e_eff] = initd();
+[design_params, motor_origins, e_eff] = init(0);
 
 %number of motors
 N = size(design_params, 1);
@@ -79,7 +77,7 @@ for t = 1:sample_size:n_periods*360
     %construct dh table
     dh_table = [design_params, jd];
     %compute transformation matrices using dh table
-    T = transformation_matricesd(dh_table);
+    T = transformation_matrices(dh_table, 0);
     
     %plot the motors
     for i = 1:N
@@ -109,7 +107,7 @@ for t = 1:sample_size:n_periods*360
     %configure unit aspect
     daspect([1 1 1])
     %set box bounds
-    axis([-0.2, 0.1, -0.2, 0.2, -0.1, 0.3])
+    axis([-0.3, 0.3, -0.3, 0.3, -0.2, 0.4])
     %allows more things to be plotted
     drawnow
     

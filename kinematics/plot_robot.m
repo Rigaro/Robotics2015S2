@@ -1,5 +1,6 @@
 function plot_robot(jd)
 %takes joint displacement as an input and plots the robot
+%FUNCTIONS ARE SELF-CONTAINED (NESTED)
 
 %initialise design parameters
 [design_params, motor_origins, e_eff] = init();
