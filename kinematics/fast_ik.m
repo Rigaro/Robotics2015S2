@@ -49,15 +49,28 @@ for i = 1:n
     
     %change between negative for "elbow up" and positive for "elbow down"
     q4 = eu*(pi - gamma);
+    if(q4 > pi)
+        q4 = q4-(2*pi);
+    elseif(q4 < -pi)
+        q4 = q4+(2*pi);
+    end
     
     %compute q2
     q2 = 2*atan2(-d5*sin(q4) - sqrt((d3+d5*cos(q4))^2 + (-d5*sin(q4))^2 - rOW(3)^2), d3 + d5*cos(q4) + rOW(3));
-    
+    if(q2 > pi)
+        q2 = q2-(2*pi);
+    elseif(q2 < -pi)
+        q2 = q2+(2*pi);
+    end
     %compute q1. should possibly have positive arguments, but for some reason
     %putting them negative makes it work. still not well understood. results
     %can vary between MATLAB versions
     q1 = atan2(-rOW(2), -rOW(1));
-    
+    if(q1 > pi)
+        q1 = q1-(2*pi);
+    elseif(q1 < -pi)
+        q1 = q1+(2*pi);
+    end
     %numerical transformation matrix between origin and elbow
     T04 = [[ cos(q1)*cos(q2)*cos(q4) - cos(q1)*sin(q2)*sin(q4), - cos(q1)*cos(q2)*sin(q4) - cos(q1)*cos(q4)*sin(q2), -sin(q1), 0.102*cos(q1)*sin(q2)];
         [ cos(q2)*cos(q4)*sin(q1) - sin(q1)*sin(q2)*sin(q4), - cos(q2)*sin(q1)*sin(q4) - cos(q4)*sin(q1)*sin(q2),  cos(q1), 0.102*sin(q1)*sin(q2)];
@@ -68,13 +81,27 @@ for i = 1:n
     
     %compute q6, q7, q5
     q6 = acos(-T4E_n(2, 3));
+    if(q6 > pi)
+        q6 = q6-(2*pi);
+    elseif(q6 < -pi)
+        q6 = q6+(2*pi);
+    end
     q7 = atan2(-T4E_n(2, 2), T4E_n(2, 1));
+    if(q7 > pi)
+        q7 = q7-(2*pi);
+    elseif(q7 < -pi)
+        q7 = q7+(2*pi);
+    end
     q5 = atan2(T4E_n(3, 3), T4E_n(1, 3));
-    
+    if(q5 > pi)
+        q5 = q5-(2*pi);
+    elseif(q5 < -pi)
+        q5 = q5+(2*pi);
+    end
     %set q3 = 0 (redundant manipulator)
     q3 = 0;
     
     %convert to degrees and make between -180 and 180 before output
-    jd(:, i) = mod(rad2deg([q1; q2; q3; q4; q5; q6; q7]) + 180, 360) - 180;
+    jd(:, i) = rad2deg([q1; q2; q3; q4; q5; q6; q7]);
     
 end
