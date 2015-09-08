@@ -1,16 +1,12 @@
+% Functions to create the robot's window.
 function robotGUI()
-global updateTimer
-updateTimer = timer('BusyMode', 'drop', ...
-                      'ExecutionMode', 'fixedRate', ...
-                      'Name', 'updateTimer', ...
-                      'Period' ,2, ...
-                      'TimerFcn', {@(~,~)updateDisplay});
-
-% Create global figure to display robot
+% Create global hangle for figure, allowing it to be changed
+% in other funtions.
 global robotFig
 robotFig = figure('CloseRequestFcn',@robotGUI_CloseRequestFcn);
 set(robotFig, 'Name', 'Robot Fig');
 set(robotFig, 'MenuBar', 'none');
+% Create global variables for robot coordinates and angles.
 global robotAngles
 global robotPos
 global robotOri
@@ -18,13 +14,15 @@ robotPos = zeros([3,1]);
 robotOri = zeros([3,1]);
 robotAngles = zeros([7,1]);
 plotRobot(robotAngles);
-% Only start timer if it is not running
-if strcmp(get(updateTimer, 'Running'), 'off')
-    start(updateTimer);
+
+% Create handle for GUI update function that includes angle
+% read and forward kinematics.
+global updateRobotStatus
+updateRobotStatus = @updateRobotGUI;
 end
 
-% Timer callback function that draws robot and updates status.
-function updateDisplay()
+% Function that draws robot and updates status.
+function updateRobotGUI()
 global robotAngles
 global dmxStatus
 global robotPos
@@ -37,26 +35,14 @@ end
 plotRobot(robotAngles);
 [robotPos, robotOri] = forward_kinematics(robotAngles); 
 plotCoord();
+end
 
 % --- Executes when user attempts to close figure.
-% Overrides figure close function to include timer stop and
-% library unload.
+% Overrides figure close function to include library unload.
 function robotGUI_CloseRequestFcn(hObject, eventdata, handles)
 % hObject    handle to figure1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global updateTimer
-% Necessary to provide this function to prevent timer callback
-% from causing an error after GUI code stops executing.
-% Before exiting, if the timer is running, stop it.
-timerValid = isvalid(updateTimer);
-if (timerValid ~= 0)
-    if strcmp(get(updateTimer, 'Running'), 'on')
-        stop(updateTimer);
-    end
-    % Destroy timer
-    delete(updateTimer);
-end
 %Close dynamixel library
 if(libisloaded('dynamixel'))
     calllib('dynamixel','dxl_terminate');  
@@ -64,3 +50,4 @@ if(libisloaded('dynamixel'))
 end
 % Hint: delete(hObject) closes the figure
 delete(hObject);
+end
