@@ -33,6 +33,7 @@ void setup() {
   motor2->setSpeed(150);
   motor2->run(FORWARD);
   motor2->run(RELEASE);
+  gripped1=isSecure();
 }
 
 void loop() {
@@ -44,7 +45,7 @@ void loop() {
   }
   
   //Updating gripped status
-  gripped1=isSecure(void);
+  gripped1=isSecure();
   
   //Let's leave it gripped for a little while for demonstration
   if(gripped1==TRUE)
