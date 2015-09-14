@@ -524,7 +524,7 @@ syncRobotSpeeds(jSpeed);
 % Sends desired angles information
 syncRobotAngles(jAngle);
 global updateRobotStatus
-updateRobotStatus;
+updateRobotStatus();
 
 
 % --- Executes on button press in pushbutton3.

@@ -22,7 +22,7 @@ function varargout = pathGUI(varargin)
 
 % Edit the above text to modify the response to help pathGUI
 
-% Last Modified by GUIDE v2.5 09-Sep-2015 11:33:31
+% Last Modified by GUIDE v2.5 14-Sep-2015 17:53:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -229,19 +229,7 @@ function goToPos_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global desSpeed
 global desLoc
-%global robotAngles
-%Opti iKine
-%desAngles = inverse_kinematics(desLoc,robotAngles);
-%Fast iKine
-desAngles = fast_ik(desLoc);
-%Change desired angles to real motor angles
-motAngles = offsetMotorJoint(desAngles)
-desAngles
-%Update speed and angles.
-syncRobotSpeeds(desSpeed);
-syncRobotAngles(motAngles);
-global updateRobotStatus
-updateRobotStatus;
+moveL(desLoc, desSpeed);
 
 
 % --- Executes on slider movement.
@@ -281,3 +269,38 @@ function exit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(pathGUI);
+
+
+
+function speed_Callback(hObject, eventdata, handles)
+% hObject    handle to speed (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of speed as text
+%        str2double(get(hObject,'String')) returns contents of speed as a double
+global desSpeed
+desSpeed = str2double(get(hObject,'String'));
+
+% --- Executes during object creation, after setting all properties.
+function speed_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to speed (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in sim.
+function sim_Callback(hObject, eventdata, handles)
+% hObject    handle to sim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of sim
+global simulation
+simulation = get(hObject,'Value');

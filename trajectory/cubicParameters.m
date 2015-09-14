@@ -18,11 +18,11 @@ function [aParam, finalTime] = cubicParameters(startLoc, finalLoc, speed)
     zDist = finalLoc(3) - startLoc(3);
     dist = sqrt(xDist^2 + yDist^2 + zDist^2);
     % Calculate the time taken using the desired speed.
-    finalTime = dist/speed;
+    finalTime = ceil(dist/speed);
     % Compute A matrix from system of equations.
     A = [[1         0               0               0        ];
          [0         1               0               0        ];
-         [1     finalTime       finalTime^2     finalTime^2  ];
+         [1     finalTime       finalTime^2     finalTime^3  ];
          [0         1           2*finalTime     3*finalTime^2]];
     % For all coordinates in task space.
     for i=1:1:6

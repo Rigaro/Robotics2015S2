@@ -22,7 +22,7 @@ function varargout = menuGUI(varargin)
 
 % Edit the above text to modify the response to help menuGUI
 
-% Last Modified by GUIDE v2.5 01-Sep-2015 18:57:46
+% Last Modified by GUIDE v2.5 14-Sep-2015 18:27:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -105,19 +105,10 @@ function pathDemo_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Stops timer before launching Kinematics demo.
-global updateTimer
-global robotFig
-timerValid = isvalid(updateTimer);
-if (timerValid ~= 0)
-    if strcmp(get(updateTimer, 'Running'), 'on')
-        stop(updateTimer);
-    end
-end
 % Launches demo only if robot window is available, otherwise 
 % relaunches robotGUI
-timerValid = isvalid(robotFig);
-if (timerValid ~= 0)
+figValid = isvalid(robotFig);
+if (figValid ~= 0)
     inverse_kinematics_demo();
 else
     robotGUI
@@ -130,4 +121,13 @@ function iKineDemo_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 iKineGUI();
+delete(menuGUI);
+
+
+% --- Executes on button press in plan.
+function plan_Callback(hObject, eventdata, handles)
+% hObject    handle to plan (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+pathGUI();
 delete(menuGUI);

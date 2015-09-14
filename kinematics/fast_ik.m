@@ -79,24 +79,31 @@ for i = 1:n
     %numerical transformation between elbow and end effector
     T4E_n = T04\TOE;
     
-    %compute q6, q7, q5
+    %compute q6, q7, q5    
+    flippedq5 = 0;
+    q5 = atan2(T4E_n(3, 3), T4E_n(1, 3));
+    if(q5 > pi)
+        q5 = q5-(2*pi);
+    elseif(q5 < -pi)
+        q5 = q5+(2*pi);
+    elseif((q5 == pi)||(q5 == -pi))
+        q5 = 0;
+        flippedq5 = 1;
+    end
     q6 = acos(-T4E_n(2, 3));
     if(q6 > pi)
         q6 = q6-(2*pi);
     elseif(q6 < -pi)
         q6 = q6+(2*pi);
     end
+    if (flippedq5 == 1)
+        q6 = -q6;
+    end
     q7 = atan2(-T4E_n(2, 2), T4E_n(2, 1));
     if(q7 > pi)
         q7 = q7-(2*pi);
     elseif(q7 < -pi)
         q7 = q7+(2*pi);
-    end
-    q5 = atan2(T4E_n(3, 3), T4E_n(1, 3));
-    if(q5 > pi)
-        q5 = q5-(2*pi);
-    elseif(q5 < -pi)
-        q5 = q5+(2*pi);
     end
     %set q3 = 0 (redundant manipulator)
     q3 = 0;

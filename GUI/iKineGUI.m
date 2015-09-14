@@ -241,7 +241,7 @@ desAngles
 syncRobotSpeeds(desSpeed);
 syncRobotAngles(motAngles);
 global updateRobotStatus
-updateRobotStatus;
+updateRobotStatus();
 
 
 % --- Executes on slider movement.
