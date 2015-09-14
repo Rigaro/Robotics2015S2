@@ -84,7 +84,7 @@ function j1angle_Callback(hObject, eventdata, handles)
 j1angle = get(hObject,'Value');
 setJointAngle(j1angle, 1);
 global updateRobotStatus;
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j1angle_CreateFcn(hObject, eventdata, handles)
@@ -109,7 +109,7 @@ function j2angle_Callback(hObject, eventdata, handles)
 j2angle = get(hObject,'Value');
 setJointAngle(j2angle, 2);
 global updateRobotStatus
-updateRobotStatus;
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j2angle_CreateFcn(hObject, eventdata, handles)
@@ -134,7 +134,7 @@ function j3angle_Callback(hObject, eventdata, handles)
 j3angle = get(hObject,'Value');
 setJointAngle(j3angle, 3);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j3angle_CreateFcn(hObject, eventdata, handles)
@@ -159,7 +159,7 @@ function j4angle_Callback(hObject, eventdata, handles)
 j4angle = get(hObject,'Value');
 setJointAngle(j4angle, 4);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j4angle_CreateFcn(hObject, eventdata, handles)
@@ -184,7 +184,7 @@ function j5angle_Callback(hObject, eventdata, handles)
 j5angle = get(hObject,'Value');
 setJointAngle(j5angle, 5);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j5angle_CreateFcn(hObject, eventdata, handles)
@@ -209,7 +209,7 @@ function j6angle_Callback(hObject, eventdata, handles)
 j6angle = get(hObject,'Value');
 setJointAngle(j6angle, 6);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j6angle_CreateFcn(hObject, eventdata, handles)
@@ -234,7 +234,7 @@ function j7angle_Callback(hObject, eventdata, handles)
 j7angle = get(hObject,'Value');
 setJointAngle(j7angle, 7);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j7angle_CreateFcn(hObject, eventdata, handles)
@@ -259,7 +259,7 @@ function j1speed_Callback(hObject, eventdata, handles)
 j1speed = get(hObject,'Value');
 setJointSpeed(j1speed, 1);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j1speed_CreateFcn(hObject, eventdata, handles)
@@ -284,7 +284,7 @@ function j2speed_Callback(hObject, eventdata, handles)
 j2speed = get(hObject,'Value');
 setJointSpeed(j2speed, 2);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j2speed_CreateFcn(hObject, eventdata, handles)
@@ -309,7 +309,7 @@ function j3speed_Callback(hObject, eventdata, handles)
 j3speed = get(hObject,'Value');
 setJointSpeed(j3speed, 3);
 global updateRobotStatus
-updateRobotStatus
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j3speed_CreateFcn(hObject, eventdata, handles)
@@ -334,7 +334,7 @@ function j4speed_Callback(hObject, eventdata, handles)
 j4speed = get(hObject,'Value');
 setJointSpeed(j4speed, 4);
 global updateRobotStatus
-updateRobotStatus;
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j4speed_CreateFcn(hObject, eventdata, handles)
@@ -359,7 +359,7 @@ function j5speed_Callback(hObject, eventdata, handles)
 j5speed = get(hObject,'Value');
 setJointSpeed(j5speed, 5);
 global updateRobotStatus
-updateRobotStatus;
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j5speed_CreateFcn(hObject, eventdata, handles)
@@ -384,7 +384,7 @@ function j6speed_Callback(hObject, eventdata, handles)
 j6speed = get(hObject,'Value');
 setJointSpeed(j6speed, 6);
 global updateRobotStatus
-updateRobotStatus;
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j6speed_CreateFcn(hObject, eventdata, handles)
@@ -409,7 +409,7 @@ function j7speed_Callback(hObject, eventdata, handles)
 j7speed = get(hObject,'Value');
 setJointSpeed(j7speed, 7);
 global updateRobotStatus
-updateRobotStatus;
+updateRobotStatus();
 
 % --- Executes during object creation, after setting all properties.
 function j7speed_CreateFcn(hObject, eventdata, handles)

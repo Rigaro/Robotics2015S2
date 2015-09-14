@@ -5,7 +5,7 @@ function robotGUI()
 global robotFig
 robotFig = figure('CloseRequestFcn',@robotGUI_CloseRequestFcn);
 set(robotFig, 'Name', 'Robot Fig');
-set(robotFig, 'MenuBar', 'none');
+%set(robotFig, 'MenuBar', 'none');
 % Create global variables for robot coordinates and angles.
 global robotAngles
 global robotPos
@@ -24,13 +24,11 @@ end
 % Function that draws robot and updates status.
 function updateRobotGUI()
 global robotAngles
-global dmxStatus
+global simulation
 global robotPos
 global robotOri
-if (dmxStatus == 1)
+if (simulation == 0)
     robotAngles = offsetSimJoint(readRobotAngles());
-else
-    robotAngles = zeros([7,1]);
 end
 plotRobot(robotAngles);
 [robotPos, robotOri] = forward_kinematics(robotAngles); 

@@ -8,10 +8,15 @@ DEFAULT_BAUDNUM = 1; % 1mbps
 res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 %Connection status
 global dmxStatus
+global simulation
 if(res == 1)
+    % Connection established
     dmxStatus = 1;
+    simulation = 0;
 else
+    % Connection failed, force simulation
     dmxStatus = 0;
+    simulation = 1;
 end
 %start gui
 menuGUI();
