@@ -1,3 +1,4 @@
+%DISCLAIMER: this is linear trajectory generation, different from what is taught in lectures
 %demo to generate and plot trajectory, showing the surface which the robot
 %passed
 clc

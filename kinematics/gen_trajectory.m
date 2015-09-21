@@ -1,4 +1,5 @@
 function [jds] = gen_trajectory(pose1, pose2, n)
+%DISCLAIMER: this is linear trajectory generation, different from what is taught in lectures
 %generates a 7 by n matrix containing joint displacement angles (in degrees)
 %which interpolates between pose1 and pose2
 %NOTE: currently does not deal well with poses that are "opposite" to each
