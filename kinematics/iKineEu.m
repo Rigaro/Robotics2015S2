@@ -1,4 +1,5 @@
-function jd = fast_ik(pose, eu)
+% Performs inverse kinematics for the 
+function jd = iKineEu(pose, eu)
 %implements fast inverse kinematics
 %default is elbow up (eu is -1), otherwise set eu to 1
 %
@@ -31,11 +32,7 @@ for i = 1:n
     %create reference position
     rOE = pose(1:3, i);
     %create reference orientation using null space
-    ROE = zeros(3);
-    ROE(:, 3) = pose(4:6, i)/norm(pose(4:6, i));
-    nll = null(ROE(:, 3)');
-    ROE(:, 1) = nll(:, 1);
-    ROE(:, 2) = cross(ROE(:, 3), ROE(:, 1));
+    ROE = eul2rotm(transpose(pose(4:6)));
     
     %transformation between origin and end-effector
     TOE = [ROE, rOE;
@@ -48,7 +45,7 @@ for i = 1:n
     gamma = acos(-(norm(rOW)^2 - d3^2 - d5^2)/(2*d3*d5));
     
     %change between negative for "elbow up" and positive for "elbow down"
-    q4 = eu*(pi - gamma);
+    q4 = (pi - gamma);
     if(q4 > pi)
         q4 = q4-(2*pi);
     elseif(q4 < -pi)

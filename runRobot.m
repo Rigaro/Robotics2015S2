@@ -9,6 +9,8 @@ res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
 %Connection status
 global dmxStatus
 global simulation
+global robotAngles
+robotAngles = zeros([7,1]);
 if(res == 1)
     % Connection established
     dmxStatus = 1;

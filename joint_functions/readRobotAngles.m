@@ -5,8 +5,10 @@ if(~libisloaded('dynamixel'))
     loadlibrary('dynamixel','dynamixel.h');
 end
 
-    jointAngles = zeros([7, 1]);
-    for i=1:1:7
+    global robotAngles
+    jointAngles = robotAngles;
+    % Read all motor angles.
+    for i=1:7
         jointAngles(i) = getJointPosition(i);
     end
     

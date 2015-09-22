@@ -24,14 +24,16 @@ end
 % Function that draws robot and updates status.
 function updateRobotGUI()
 global robotAngles
-global simulation
+%global simulation
 global robotPos
 global robotOri
-if (simulation == 0)
-    robotAngles = offsetSimJoint(readRobotAngles());
-end
+% Location being updated from inverse kinematics directly,
+% actual location update rate is too slow.
+% if (simulation == 0)
+%     robotAngles = offsetSimJoint(readRobotAngles());
+% end
 plotRobot(robotAngles);
-[robotPos, robotOri] = forward_kinematics(robotAngles); 
+[robotPos, robotOri] = fKineEu(robotAngles); 
 plotCoord();
 end
 

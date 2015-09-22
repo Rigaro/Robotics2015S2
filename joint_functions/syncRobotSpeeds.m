@@ -84,9 +84,9 @@ if res == 1
     else
         PrintCommStatus(CommStatus);
     end
-    disp('Success');
+    %disp('Success');
 else
-    disp('Failed to open USB2Dynamixel!');
+    disp('Failed to open USB2Dynamixel! Speedsync');
 end
 %Close Device if library is loaded.
 if(libisloaded('dynamixel'))
