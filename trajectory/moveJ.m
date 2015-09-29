@@ -8,9 +8,9 @@ function moveJ(desLoc, desSpeed)
     global robotAngles
     global simulation
     %Fast iKine
-    desAngles = iKineEu(desLoc)
+    desAngles = iKineEu(desLoc);
     %Change desired angles to real motor angles
-    motAngles = offsetMotorJoint(desAngles)
+    motAngles = offsetMotorJoint(desAngles);
     % Update speed and angles when no simulation selected.
     if (simulation == 0)
         syncRobotSpeeds(desSpeed);

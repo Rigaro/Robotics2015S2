@@ -89,10 +89,10 @@ else
     disp('Failed to open USB2Dynamixel! Speedsync');
 end
 %Close Device if library is loaded.
-if(libisloaded('dynamixel'))
-    calllib('dynamixel','dxl_terminate');  
-    unloadlibrary('dynamixel');
-end
+% if(libisloaded('dynamixel'))
+%     calllib('dynamixel','dxl_terminate');  
+%     unloadlibrary('dynamixel');
+% end
 
 
 %Print commuication result
