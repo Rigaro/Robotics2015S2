@@ -29,6 +29,6 @@ pos = pos(1:3);
 %calculates the orientation of the end effector, which is represented by
 %a vector pointing in the same direction
 orientation = rot_mat*[0; 0; 1];
-
+% orientation = transpose(rotm2eul(rot_mat));
 %outputs the orientation as a unit vector
 orientation = orientation/norm(orientation);

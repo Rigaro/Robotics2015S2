@@ -96,6 +96,11 @@ function exit_Callback(hObject, eventdata, handles)
 % hObject    handle to exit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+%Close Device if library is loaded.
+if(libisloaded('dynamixel'))
+    calllib('dynamixel','dxl_terminate');  
+    unloadlibrary('dynamixel');
+end
 delete(menuGUI);
 
 

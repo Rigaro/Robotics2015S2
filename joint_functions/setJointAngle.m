@@ -48,9 +48,11 @@ angleInt = angleTo16int(desiredAngleDeg);
 int32 PresentPos;
 int32 CommStatus;
 
-%open device
-res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
-if res == 1
+% Check for simulation activated
+global simulation
+%Initialize dynamixel
+calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
+if simulation == 0
     %Write goal position
     disp(['Setting goal angle for Joint: ' num2str(motorID) '. to: ' num2str(desiredAngleDeg) ' Deg.']);
     calllib('dynamixel','dxl_write_word',motorID,P_GOAL_POSITION,angleInt);  
@@ -63,12 +65,7 @@ if res == 1
     end  
     disp('Success');
 else
-    disp('Failed to open USB2Dynamixel!');
-end
-%Close Device if library is loaded.
-if(libisloaded('dynamixel'))
-    calllib('dynamixel','dxl_terminate');  
-    unloadlibrary('dynamixel');
+    disp('Error! Simulation mode.');
 end
 
 %Print commuication result

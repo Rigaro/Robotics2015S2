@@ -11,6 +11,8 @@ function moveL(desLoc, desSpeed)
     global simulation
     desCurLoc = zeros(6,1);
     desCurSpe = zeros(6,1);
+    desAngSpeed = [0;0;0;0;0;0;0];
+    syncRobotSpeeds(desAngSpeed);
     % Update current robot location and plot.
     %updateRobotStatus();
     [robotPos, robotOri] = fKineEu(robotAngles);
@@ -41,13 +43,13 @@ function moveL(desLoc, desSpeed)
 %         desAngSpeed(desAngSpeed>100)=100;
 %         desAngSpeed(desAngSpeed<1)=1;
 %         desAngSpeed
-        desAngSpeed = [0;0;0;0;0;0;0];
+        %desAngSpeed = [0;0;0;0;0;0;0];
         % Change desired angles to real motor angles
         motAngles = offsetMotorJoint(desAngles);
         % Update speed and angles when no simulation selected.
         % Chaned so the actual location is not read from motors.
         if (simulation == 0)
-            syncRobotSpeeds(desAngSpeed);
+            %syncRobotSpeeds(desAngSpeed);
             syncRobotAngles(motAngles);
             robotAngles = desAngles;
         else
@@ -75,7 +77,7 @@ function moveL(desLoc, desSpeed)
     motAngles = offsetMotorJoint(desAngles);
     % Update speed and angles when no simulation selected.
     if (simulation == 0)
-        syncRobotSpeeds(desAngSpeed);
+        %syncRobotSpeeds(desAngSpeed);
         syncRobotAngles(motAngles);
     else
         robotAngles = desAngles;

@@ -34,7 +34,7 @@ global robotOri
 % if (simulation == 0)
 %     robotAngles = offsetSimJoint(readRobotAngles());
 % end
-[robotPos, robotOri] = forward_kinematics(robotAngles);
+[robotPos, robotOri] = fKineEu(robotAngles);
 if(simulation == 1)
     plotRobot(robotAngles);
     plotCoord();
