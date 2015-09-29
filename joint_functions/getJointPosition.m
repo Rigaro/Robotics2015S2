@@ -61,12 +61,6 @@ else
     disp('Failed to open USB2Dynamixel!');
 end
 
-%Close Device when library is loaded
-if(libisloaded('dynamixel'))
-    calllib('dynamixel','dxl_terminate');  
-    unloadlibrary('dynamixel');
-end
-
 %Print commuication result
 function [] = PrintErrorCode()
 global ERRBIT_VOLTAGE

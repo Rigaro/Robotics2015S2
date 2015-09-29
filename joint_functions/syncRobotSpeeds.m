@@ -58,9 +58,11 @@ for i = 1:1:NUM_ACTUATOR
     iDesSpeeds(i) = rpmTo16int(desiredSpeeds(i));
 end
 
-%open device
-res = calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
-if res == 1
+% Check for simulation activated
+global simulation
+%Initialize dynamixel
+calllib('dynamixel','dxl_initialize',DEFAULT_PORTNUM,DEFAULT_BAUDNUM);
+if simulation == 0
     % Create syncwrite packet by broadcasting a syncwrite
     % instruction and then separating motor packets with IDs.
     calllib('dynamixel','dxl_set_txpacket_id',BROADCAST_ID);
@@ -84,16 +86,9 @@ if res == 1
     else
         PrintCommStatus(CommStatus);
     end
-    disp('Success');
 else
-    disp('Failed to open USB2Dynamixel!');
+    disp('Error! Simulation mode.');
 end
-%Close Device if library is loaded.
-if(libisloaded('dynamixel'))
-    calllib('dynamixel','dxl_terminate');  
-    unloadlibrary('dynamixel');
-end
-
 
 %Print commuication result
 function [] = PrintErrorCode()

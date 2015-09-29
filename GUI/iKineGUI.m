@@ -229,19 +229,8 @@ function goToPos_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global desSpeed
 global desLoc
-%global robotAngles
-%Opti iKine
-%desAngles = inverse_kinematics(desLoc,robotAngles);
-%Fast iKine
-desAngles = fast_ik(desLoc);
-%Change desired angles to real motor angles
-motAngles = offsetMotorJoint(desAngles)
-desAngles
-%Update speed and angles.
-syncRobotSpeeds(desSpeed);
-syncRobotAngles(motAngles);
-global updateRobotStatus
-updateRobotStatus();
+%moveJ
+moveJ(desLoc,desSpeed);
 
 
 % --- Executes on slider movement.
@@ -281,4 +270,9 @@ function exit_Callback(hObject, eventdata, handles)
 % hObject    handle to exit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+%Close Device if library is loaded.
+if(libisloaded('dynamixel'))
+    calllib('dynamixel','dxl_terminate');  
+    unloadlibrary('dynamixel');
+end
 delete(iKineGUI);

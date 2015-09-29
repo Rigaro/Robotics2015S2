@@ -1,7 +1,10 @@
-function [pos, orientation] = forward_kinematics(jd)
-%given a joint displacement vector, returns the position and pose of the
-%end effector
-
+% Performs forward kinematics of robot using Euler Angles
+% for orientation.
+% @param jd joint space robot angles.
+% @return position the robot's end effector position.
+% @return orientation the robot's end effector orientation in
+% Euler Angles (degrees).
+function [position, orientation] = fKineEu(jd)
 %initialise design variables
 [design_params, motor_origins, e_eff] = init(0);
 
@@ -24,11 +27,8 @@ rot_mat = tm(1:3, 1:3);
 pos = tm*[0; 0; motor_origins(N) + e_eff; 1];
 
 %removes the 1 at the end of the vector
-pos = pos(1:3);
-
-%calculates the orientation of the end effector, which is represented by
-%a vector pointing in the same direction
-orientation = rot_mat*[0; 0; 1];
-
-%outputs the orientation as a unit vector
-orientation = orientation/norm(orientation);
+position = pos(1:3);
+%calculates the orientation of the end effector represented as
+%Euler angles.
+orientation = rad2deg(transpose(rotm2eul(rot_mat)));
+end

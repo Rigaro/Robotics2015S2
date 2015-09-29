@@ -1,17 +1,12 @@
-function jd = fast_ik(pose, eu)
+function jd = iKineEu(pose)
 %implements fast inverse kinematics
-%default is elbow up (eu is -1), otherwise set eu to 1
+%default is elbow down
 %
 %returns a joint displacement vector (in degrees) given a desired pose
 %[r_pos; r_ori] where r_pos = [x; y; z] is the desired position and
-%r_ori = [a; b; c] is the desired vector direction in which the end
-%effector points
+%r_ori = [a; b; c] is the desired euler angles in degrees.
 %accepts matrix 6 by n and returns matrix 7 by n
 %will cause error if in unreachable pose
-
-if (nargin < 2)
-    eu = -1;
-end
 
 %initialise parameters
 [design_params, motor_origins, e_eff] = init();
@@ -31,11 +26,7 @@ for i = 1:n
     %create reference position
     rOE = pose(1:3, i);
     %create reference orientation using null space
-    ROE = zeros(3);
-    ROE(:, 3) = pose(4:6, i)/norm(pose(4:6, i));
-    nll = null(ROE(:, 3)');
-    ROE(:, 1) = nll(:, 1);
-    ROE(:, 2) = cross(ROE(:, 3), ROE(:, 1));
+    ROE = eul2rotm(transpose(deg2rad(pose(4:6))));
     
     %transformation between origin and end-effector
     TOE = [ROE, rOE;
@@ -48,29 +39,16 @@ for i = 1:n
     gamma = acos(-(norm(rOW)^2 - d3^2 - d5^2)/(2*d3*d5));
     
     %change between negative for "elbow up" and positive for "elbow down"
-    q4 = eu*(pi - gamma);
-    if(q4 > pi)
-        q4 = q4-(2*pi);
-    elseif(q4 < -pi)
-        q4 = q4+(2*pi);
-    end
+    q4 = (pi - gamma);
     
     %compute q2
     q2 = 2*atan2(-d5*sin(q4) - sqrt((d3+d5*cos(q4))^2 + (-d5*sin(q4))^2 - rOW(3)^2), d3 + d5*cos(q4) + rOW(3));
-    if(q2 > pi)
-        q2 = q2-(2*pi);
-    elseif(q2 < -pi)
-        q2 = q2+(2*pi);
-    end
+ 
     %compute q1. should possibly have positive arguments, but for some reason
     %putting them negative makes it work. still not well understood. results
     %can vary between MATLAB versions
     q1 = atan2(-rOW(2), -rOW(1));
-    if(q1 > pi)
-        q1 = q1-(2*pi);
-    elseif(q1 < -pi)
-        q1 = q1+(2*pi);
-    end
+
     %numerical transformation matrix between origin and elbow
     T04 = [[ cos(q1)*cos(q2)*cos(q4) - cos(q1)*sin(q2)*sin(q4), - cos(q1)*cos(q2)*sin(q4) - cos(q1)*cos(q4)*sin(q2), -sin(q1), 0.102*cos(q1)*sin(q2)];
         [ cos(q2)*cos(q4)*sin(q1) - sin(q1)*sin(q2)*sin(q4), - cos(q2)*sin(q1)*sin(q4) - cos(q4)*sin(q1)*sin(q2),  cos(q1), 0.102*sin(q1)*sin(q2)];
@@ -79,32 +57,13 @@ for i = 1:n
     %numerical transformation between elbow and end effector
     T4E_n = T04\TOE;
     
-    %compute q6, q7, q5    
-    flippedq5 = 0;
+    %compute q6, q7, q5   
     q5 = atan2(T4E_n(3, 3), T4E_n(1, 3));
-    if(q5 > pi)
-        q5 = q5-(2*pi);
-    elseif(q5 < -pi)
-        q5 = q5+(2*pi);
-    elseif((q5 == pi)||(q5 == -pi))
-        q5 = 0;
-        flippedq5 = 1;
-    end
+    
     q6 = acos(-T4E_n(2, 3));
-    if(q6 > pi)
-        q6 = q6-(2*pi);
-    elseif(q6 < -pi)
-        q6 = q6+(2*pi);
-    end
-    if (flippedq5 == 1)
-        q6 = -q6;
-    end
+    
     q7 = atan2(-T4E_n(2, 2), T4E_n(2, 1));
-    if(q7 > pi)
-        q7 = q7-(2*pi);
-    elseif(q7 < -pi)
-        q7 = q7+(2*pi);
-    end
+    
     %set q3 = 0 (redundant manipulator)
     q3 = 0;
     

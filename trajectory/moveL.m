@@ -2,7 +2,7 @@
 % and the desired position in task space. Using the desired
 % linear speed.
 % @param desLoc Desired location in task space.
-% @param desSpeed Desired linear speed in task space.
+% @param desSpeed Desired linear speed in task space (in m/s).
 function moveL(desLoc, desSpeed)
     global updateRobotStatus
     global robotPos
@@ -11,9 +11,13 @@ function moveL(desLoc, desSpeed)
     global simulation
     desCurLoc = zeros(6,1);
     desCurSpe = zeros(6,1);
+    desAngSpeed = [0;0;0;0;0;0;0];
+    syncRobotSpeeds(desAngSpeed);
     % Update current robot location and plot.
-    updateRobotStatus();
+    %updateRobotStatus();
+    [robotPos, robotOri] = fKineEu(robotAngles);
     curLoc = [robotPos; robotOri];
+    %curLoc = desCurLoc;
     % Obtain coefficients of cubic equations.
     [aCoef, finalTime] = cubicParameters(curLoc, desLoc, desSpeed);
     % Start timer
@@ -30,22 +34,28 @@ function moveL(desLoc, desSpeed)
                            aCoef(i,4)*curTime^2;
         end
         % Inverse kinematics and inverse differential kinematics
-        desAngles = fast_ik(desCurLoc);
+        desAngles = iKineEu(desCurLoc);
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%% TO BE IMPLEMENTED %%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % desAngSpeed = diffInvKine(desCurSpe);
-        
+%         desAngSpeed = abs(60*(diffIKine(desCurSpe,desAngles)/(2*pi)));
+%         % Saturate speed
+%         desAngSpeed(desAngSpeed>100)=100;
+%         desAngSpeed(desAngSpeed<1)=1;
+%         desAngSpeed
+        %desAngSpeed = [0;0;0;0;0;0;0];
         % Change desired angles to real motor angles
         motAngles = offsetMotorJoint(desAngles);
         % Update speed and angles when no simulation selected.
+        % Chaned so the actual location is not read from motors.
         if (simulation == 0)
-            syncRobotSpeeds(desAngSpeed);
+            %syncRobotSpeeds(desAngSpeed);
             syncRobotAngles(motAngles);
+            robotAngles = desAngles;
         else
             robotAngles = desAngles;
-        end        
-        updateRobotStatus();
+        end    
+        %updateRobotStatus();
     end
     % Repeat for finalTime to get desired location
     % Get the current desired location and speed
@@ -55,9 +65,9 @@ function moveL(desLoc, desSpeed)
         desCurSpe(i) = aCoef(i,2) + aCoef(i,3)*finalTime + ...
                        aCoef(i,4)*finalTime^2;
     end
-    desCurLoc
+    %desCurLoc
     % Inverse kinematics and inverse differential kinematics
-    desAngles = fast_ik(desCurLoc);
+    desAngles = iKineEu(desCurLoc);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%% TO BE IMPLEMENTED %%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,12 +77,12 @@ function moveL(desLoc, desSpeed)
     motAngles = offsetMotorJoint(desAngles);
     % Update speed and angles when no simulation selected.
     if (simulation == 0)
-        syncRobotSpeeds(desAngSpeed);
+        %syncRobotSpeeds(desAngSpeed);
         syncRobotAngles(motAngles);
     else
         robotAngles = desAngles;
     end        
     updateRobotStatus();
     % Location reached
-    disp('Location reached');
+    %disp('Location reached');
 end

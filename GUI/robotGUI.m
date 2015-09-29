@@ -2,19 +2,21 @@
 function robotGUI()
 % Create global hangle for figure, allowing it to be changed
 % in other funtions.
+global simulation
 global robotFig
-robotFig = figure('CloseRequestFcn',@robotGUI_CloseRequestFcn);
-set(robotFig, 'Name', 'Robot Fig');
-%set(robotFig, 'MenuBar', 'none');
 % Create global variables for robot coordinates and angles.
 global robotAngles
 global robotPos
 global robotOri
-robotPos = zeros([3,1]);
-robotOri = zeros([3,1]);
-robotAngles = zeros([7,1]);
-plotRobot(robotAngles);
-
+if(simulation == 1)
+    robotFig = figure('CloseRequestFcn',@robotGUI_CloseRequestFcn);
+    set(robotFig, 'Name', 'Robot Fig');
+    %set(robotFig, 'MenuBar', 'none');
+    robotPos = zeros([3,1]);
+    robotOri = zeros([3,1]);
+    robotAngles = zeros([7,1]);
+    plotRobot(robotAngles);
+end
 % Create handle for GUI update function that includes angle
 % read and forward kinematics.
 global updateRobotStatus
@@ -27,12 +29,16 @@ global robotAngles
 global simulation
 global robotPos
 global robotOri
-if (simulation == 0)
-    robotAngles = offsetSimJoint(readRobotAngles());
+% Location being updated from inverse kinematics directly,
+% actual location update rate is too slow.
+% if (simulation == 0)
+%     robotAngles = offsetSimJoint(readRobotAngles());
+% end
+[robotPos, robotOri] = fKineEu(robotAngles);
+if(simulation == 1)
+    plotRobot(robotAngles);
+    plotCoord();
 end
-plotRobot(robotAngles);
-[robotPos, robotOri] = forward_kinematics(robotAngles); 
-plotCoord();
 end
 
 % --- Executes when user attempts to close figure.
