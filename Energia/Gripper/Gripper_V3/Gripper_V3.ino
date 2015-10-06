@@ -33,37 +33,36 @@ int undoCounter2 = 0;         //Counter for how long we've been undoing the moto
 // Status variables
 String gripStatus[] = {"open","open"}; //Gripper status: open, closed
 
-// Status variables - Gripper 2
-//String grip2Status = "open"; //Gripper status: open, closed
-
 // Pin allocation - Gripper 1
-int analogPin1=A13;
-int proxPin1=31;
+const int analogPin1 = A13;
+const int proxPin1 = 31;
+const int buttonPin1 = PUSH1;     // pushbutton simulating proximity sensor inpos status, change to PIN
 
 // Pin allocation - Gripper 2
-int analogPin2=A13;
-int proxPin2=11;
+const int analogPin2 = A13;
+const int proxPin2 = 11;
+const int buttonPin2 = PUSH2;     // pushbutton simulating proximity sensor inpos status, change to PIN
 
 // Grip variables
 boolean wantToGrip[] = {false,false};
 boolean wantToUngrip[] = {false,false};
-
-// Simulation
-const int buttonPin = PUSH1;     // pushbutton simulating proximity sensor status
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
   establishContact(); // send a byte to establish contact until receiver responds 
   
   AFMS.begin();  // create with the default frequency 1.6KHz
-  // Simulation
-  pinMode(buttonPin,INPUT_PULLUP);
+  // Pin initialization
+  pinMode(buttonPin1,INPUT_PULLUP);
+  pinMode(buttonPin2,INPUT_PULLUP);
   pinMode(proxPin1,INPUT);
+  pinMode(proxPin2,INPUT);
 }
 
 void loop(){
   handleSerial();
   handleGripStatus(1);
+  //handleGripStatus(2);
 }
 
 // Handles and updates gripper status.
@@ -127,32 +126,26 @@ boolean isSecure(int gripperNum){
 // @return String with the current sensor status. found, inpos or far.
 String getProxStatus(int gripperNum){
   int sensorValue;
+  int buttonValue;
   // Select ADC to read.
   if(gripperNum == 1){
-    sensorValue = digitalRead(proxPin1);  //Get ADC value
+    sensorValue = digitalRead(proxPin1);  //Get Proximity sensor status
+    buttonValue = digitalRead(buttonPin1);  //Get Push Button status
   }else if(gripperNum == 2){
-    sensorValue = digitalRead(proxPin2);  //Get ADC value
+    sensorValue = digitalRead(proxPin2);  ///Get Proximity sensor status
+    buttonValue = digitalRead(buttonPin2);  //Get Push Button status
   }
   // Sensor in "found" range.
-  if (sensorValue == LOW){
+  if ((sensorValue == LOW)&&(buttonValue == HIGH)){
     return "found";
+  }else if ((sensorValue == LOW)&&(buttonValue == LOW)){
+    return "inpos";
   }
   // Sensor in "far" range.
   else{
     return "far";
   }
 }
-
-boolean buttonOn(void){
-  int buttonState = digitalRead(buttonPin);
-  if (buttonState==HIGH){
-    return true;
-  }
-  else{
-    return false;
-  }
-}
-
 /* 
   Establishes serial communication with PC 
 */
