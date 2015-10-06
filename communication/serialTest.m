@@ -1,6 +1,5 @@
 initGripper('COM5',9600);
-tic
-gripperStatus = getGripperStatus('gripStatus')
-toc
-% gripperStatus = getGripperStatus('proxSensor')
+%gripperStatus = handleGripper('grip1Status')
+handleGripper('grip1Open')
+% gripperStatus = handleGripper('prox1Sensor')
 endGripper();
