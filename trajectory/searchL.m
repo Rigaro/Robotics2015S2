@@ -7,7 +7,10 @@
 % desired position is reached the function throws and exception.
 % @param desLoc Desired location in task space.
 % @param desSpeed Desired linear speed in task space (in m/s).
-function searchL(desLoc, desSpeed)
+% @param proxSens Proximity sensor used for the search.
+% 'prox1Sensor' or 'prox2Sensor'.
+% @param searchCondition Condition to stop search. 'found' or 'inpos'.
+function searchL(desLoc, desSpeed, proxSens, seachCondition)
     global updateRobotStatus
     global robotPos
     global robotOri
@@ -63,9 +66,9 @@ function searchL(desLoc, desSpeed)
             updateRobotStatus();
         end    
         % Get gripper proximity sensor status
-        proxStatus = getGripperStatus('proxSensor');
+        proxStatus = getGripperStatus(proxSens);
         % If the frame has been found, return from function successfully.
-        if(strcmp(proxStatus,'found'))
+        if(strcmp(proxStatus,seachCondition))
             return
         end
     end

@@ -3,7 +3,7 @@
 #include "utility/Adafruit_PWMServoDriver.h"
 
 #define MIN_GRIP_FORCE_V 20    //Minimum value we need to define as gripped
-#define COUNTER_FOR_UNDO 3000    //How many delay (miliseconds) we need to undo gripper
+#define COUNTER_FOR_UNDO 1000    //How many delay (miliseconds) we need to undo gripper
 #define PROX_FOUND_VAL 500    //Proximity sensor found value.
 
 // Communications definitions - Gripper one
@@ -36,7 +36,7 @@ String gripStatus[] = {"open","open"}; //Gripper status: open, closed
 // Pin allocation - Gripper 1
 const int analogPin1 = A13;
 const int proxPin1 = 31;
-const int buttonPin1 = PUSH1;     // pushbutton simulating proximity sensor inpos status, change to PIN
+const int buttonPin1 = 32;     // pushbutton simulating proximity sensor inpos status, change to PIN
 
 // Pin allocation - Gripper 2
 const int analogPin2 = A13;
@@ -76,7 +76,9 @@ void handleGripStatus(int gripperNum) {
     }
   }
   if((wantToUngrip[gripperNum-1])&&(gripStatus[gripperNum-1].equals("closed"))){      // wantToGrip is placeholder for incoming info
-    runMotor(gripperNum,COUNTER_FOR_UNDO,BACKWARD);
+    for(int i = 0; i<10; i++){
+      runMotor(gripperNum,COUNTER_FOR_UNDO,BACKWARD);
+    }
     gripStatus[gripperNum-1] = "open";
     wantToUngrip[gripperNum-1] = false;
   }
@@ -86,13 +88,13 @@ void handleGripStatus(int gripperNum) {
 void runMotor(uint8_t motorNum, int time, int fowardBack){
   if(motorNum==1){
     motor1->run(fowardBack);
-    motor1->setSpeed(100);
+    motor1->setSpeed(255);
     delay(time);
     motor1->setSpeed(0);
     motor1->run(RELEASE);
   }else if(motorNum==2){
     motor2->run(fowardBack);
-    motor2->setSpeed(100);
+    motor2->setSpeed(255);
     delay(time);
     motor2->setSpeed(0);
     motor2->run(RELEASE);
