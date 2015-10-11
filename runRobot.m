@@ -16,6 +16,9 @@ if(res == 1)
     disp('Established connection with Dynamixel.');
     dmxStatus = 1;
     simulation = 0;
+    initGripper('COM5',9600);
+    gripperStatus = handleGripper('grip1Status')
+    endGripper();
 else
     % Connection failed, force simulation
     disp('Could not connect with Dynamixel, starting in simulation mode.');

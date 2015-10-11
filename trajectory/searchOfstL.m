@@ -4,13 +4,13 @@
 % the gripper returns a "found" status for the proximity sensor
 % or when the desired location is reached. If the gripper returned
 % a found instruction the function returns successfully. If the
-% desired position is reached the function throws and exception.
-% @param desLoc Desired location in task space.
+% desired position is reached the function throws and exception
+% @param posOffset Position offset in end effector frame to move.
 % @param desSpeed Desired linear speed in task space (in m/s).
 % @param proxSens Proximity sensor used for the search.
 % 'prox1Sensor' or 'prox2Sensor'.
 % @param searchCondition Condition to stop search. 'found' or 'inpos'.
-function searchL(desLoc, desSpeed, proxSens, searchCondition)
+function searchOfstL(posOffset, desSpeed, proxSens, searchCondition)
     global updateRobotStatus
     global robotPos
     global robotOri
@@ -23,10 +23,26 @@ function searchL(desLoc, desSpeed, proxSens, searchCondition)
     % Initialize gripper comms.
     initGripper('COM5',9600);
     % Update current robot location and plot.
-    %updateRobotStatus();
+    %updateRobotStatus();    
     [robotPos, robotOri] = fKineEu(robotAngles);
     curLoc = [robotPos; robotOri];
     %curLoc = desCurLoc;
+    % Get desired location from offset.    
+    [curPos,curOri] = fKineEu(offsetSimJoint(readRobotAngles));
+    curRotMat = eul2rotm(deg2rad(curOri'));
+    % Base to end effector transformation matrix.
+    T0_e = [[curRotMat(1,:),curPos(1)];
+            [curRotMat(2,:),curPos(2)];
+            [curRotMat(3,:),curPos(3)];
+            [0 0 0 1]];
+    % Offset end effector transformation matrix
+    T_ee = [[0 0 0 posOffset(1)];
+            [0 0 0 posOffset(2)];
+            [0 0 0 posOffset(3)];
+            [0 0 0 1]];
+    % Get position offset.
+    desLocMat = T0_e*T_ee;
+    desLoc = [desLocMat(1:3,4);curOri];
     % Obtain coefficients of cubic equations.
     [aCoef, finalTime] = cubicParameters(curLoc, desLoc, desSpeed);
     % Start timer

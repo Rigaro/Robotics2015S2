@@ -13,21 +13,21 @@
 function status = handleGripper(instruction)
     global serialObj
     if(strcmp(instruction,'grip1Status'))
-        fprintf(serialObj,1);
+        fprintf(serialObj,'%c',1);
     elseif(strcmp(instruction,'prox1Sensor'))
-        fprintf(serialObj,2);
+        fprintf(serialObj,'%c',2);
     elseif(strcmp(instruction,'grip1Close'))
-        fprintf(serialObj,3);
+        fprintf(serialObj,'%c',3);
     elseif(strcmp(instruction,'grip1Open'))
-        fprintf(serialObj,4);
+        fprintf(serialObj,'%c',4);
     elseif(strcmp(instruction,'grip2Status'))
-        fprintf(serialObj,5);
+        fprintf(serialObj,'%c',5);
     elseif(strcmp(instruction,'prox2Sensor'))
-        fprintf(serialObj,6);
+        fprintf(serialObj,'%c',6);
     elseif(strcmp(instruction,'grip2Close'))
-        fprintf(serialObj,7);
+        fprintf(serialObj,'%c',7);
     elseif(strcmp(instruction,'grip2Open'))
-        fprintf(serialObj,8);
+        fprintf(serialObj,'%c',8);
     end
     status = fscanf(serialObj);
 end

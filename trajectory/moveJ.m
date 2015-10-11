@@ -7,6 +7,7 @@ function moveJ(desLoc, desSpeed)
     global updateRobotStatus
     global robotAngles
     global simulation
+    desSpeed = [desSpeed;desSpeed;desSpeed;desSpeed;desSpeed;desSpeed;desSpeed];
     %Fast iKine
     desAngles = iKineEu(desLoc);
     %Change desired angles to real motor angles
