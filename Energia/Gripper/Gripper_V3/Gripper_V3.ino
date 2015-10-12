@@ -2,7 +2,7 @@
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_PWMServoDriver.h"
 
-#define MIN_GRIP_FORCE_V 20    //Minimum value we need to define as gripped
+#define MIN_GRIP_FORCE_V 10    //Minimum value we need to define as gripped
 #define COUNTER_FOR_UNDO 1000    //How many delay (miliseconds) we need to undo gripper
 #define PROX_FOUND_VAL 500    //Proximity sensor found value.
 
@@ -32,16 +32,17 @@ int undoCounter2 = 0;         //Counter for how long we've been undoing the moto
 
 // Status variables
 String gripStatus[] = {"open","open"}; //Gripper status: open, closed
+String proxStatus[] = {"far","far"}; //Proximity sensor status: far, found, inpos
 
 // Pin allocation - Gripper 1
 const int analogPin1 = A13;
 const int proxPin1 = 31;
-const int buttonPin1 = 32;     // pushbutton simulating proximity sensor inpos status, change to PIN
+const int buttonPin1 = 32;
 
 // Pin allocation - Gripper 2
 const int analogPin2 = A13;
 const int proxPin2 = 11;
-const int buttonPin2 = PUSH2;     // pushbutton simulating proximity sensor inpos status, change to PIN
+const int buttonPin2 = 12;
 
 // Grip variables
 boolean wantToGrip[] = {false,false};
@@ -60,9 +61,11 @@ void setup() {
 }
 
 void loop(){
+  proxStatus[0] = getProxStatus(1);  
+  proxStatus[1] = getProxStatus(2);
   handleSerial();
   handleGripStatus(1);
-  //handleGripStatus(2);
+  handleGripStatus(2);
 }
 
 // Handles and updates gripper status.
@@ -76,7 +79,7 @@ void handleGripStatus(int gripperNum) {
     }
   }
   if((wantToUngrip[gripperNum-1])&&(gripStatus[gripperNum-1].equals("closed"))){      // wantToGrip is placeholder for incoming info
-    for(int i = 0; i<10; i++){
+    for(int i = 0; i<5; i++){
       runMotor(gripperNum,COUNTER_FOR_UNDO,BACKWARD);
     }
     gripStatus[gripperNum-1] = "open";
@@ -173,7 +176,7 @@ void handleSerial() {
       Serial.println(gripStatus[0]);
     }else if(inByte == PROX1_SENSOR){
       // Send Proximity sensor 1 status.
-      Serial.println(getProxStatus(1));
+      Serial.println(proxStatus[0]);
     }else if((inByte == CLOSE1_CMD)&&(gripStatus[0].equals("open"))){
       // Close Gripper 1.
       wantToGrip[0] = true;
@@ -187,7 +190,7 @@ void handleSerial() {
       Serial.println(gripStatus[1]);
     }else if(inByte == PROX2_SENSOR){
       // Send Proximity sensor 1 status.
-      Serial.println(getProxStatus(2));
+      Serial.println(proxStatus[1]);
     }else if((inByte == CLOSE2_CMD)&&(gripStatus[1].equals("open"))){
       // Close Gripper 2.
       wantToGrip[1] = true;
