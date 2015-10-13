@@ -39,7 +39,7 @@ for i = 1:n
     gamma = acos(-(norm(rOW)^2 - d3^2 - d5^2)/(2*d3*d5));
     
     %change between negative for "elbow up" and positive for "elbow down"
-    q4 = (pi - gamma);
+    q4 = -(pi - gamma);
     
     %compute q2
     q2 = 2*atan2(-d5*sin(q4) - sqrt((d3+d5*cos(q4))^2 + (-d5*sin(q4))^2 - rOW(3)^2), d3 + d5*cos(q4) + rOW(3));

@@ -40,7 +40,7 @@ const int proxPin1 = 31;
 const int buttonPin1 = 32;
 
 // Pin allocation - Gripper 2
-const int analogPin2 = A13;
+const int analogPin2 = A14;
 const int proxPin2 = 11;
 const int buttonPin2 = 12;
 

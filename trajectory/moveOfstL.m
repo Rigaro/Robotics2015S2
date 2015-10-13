@@ -18,7 +18,9 @@ function moveOfstL(posOffset, desSpeed)
     curLoc = [robotPos; robotOri];
     %curLoc = desCurLoc;
     % Get desired location from offset.    
-    [curPos,curOri] = fKineEu(offsetSimJoint(readRobotAngles));
+    %[curPos,curOri] = fKineEu(offsetSimJoint(readRobotAngles));
+    curPos = robotPos;
+    curOri = robotOri;
     curRotMat = eul2rotm(deg2rad(curOri'));
     % Base to end effector transformation matrix.
     T0_e = [[curRotMat(1,:),curPos(1)];
