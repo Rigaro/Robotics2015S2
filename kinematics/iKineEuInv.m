@@ -1,4 +1,4 @@
-function jd = iKineEu(pose)
+function jd = iKineEuInv(pose)
 %implements fast inverse kinematics
 %default is elbow down
 %
@@ -9,7 +9,7 @@ function jd = iKineEu(pose)
 %will cause error if in unreachable pose
 
 %initialise parameters
-[design_params, motor_origins, e_eff] = init();
+[design_params, motor_origins, e_eff] = initInv();
 
 %distance between wrist and end effector
 dE = e_eff + motor_origins(7);
@@ -19,30 +19,7 @@ d3 = design_params(3, 3);
 %distance between elbow and wrist
 d5 = design_params(5, 3);
 
-n = size(pose, 2);
-jd = zeros(7, n);
-
-for i = 1:n
-    %create reference position
-    rOE = pose(1:3, i);
-    %create reference orientation using null space
-    ROE = eul2rotm(transpose(deg2rad(pose(4:6))));
-    
-    %transformation between origin and end-effector
-    TOE = [ROE, rOE;
-        [0 0 0 1]];
-    
-    %find vector from origin to wrist
-    rOW = rOE - ROE*[0; 0; dE];
-    
-    %find inner elbow angle using cos rule
-    gamma = acos(-(norm(rOW)^2 - d3^2 - d5^2)/(2*d3*d5));
-    
-    %change between negative for "elbow up" and positive for "elbow down"
-    q4 = -(pi - gamma);
-=======
 jd = zeros(7, 1);
->>>>>>> gripper
     
 %set q3 = 0 (redundant manipulator)
 q3 = 0;
@@ -75,9 +52,9 @@ q2 = 2*atan2((-d5*sin(q4) - sqrt((d3+d5*cos(q4))^2 + (-d5*sin(q4))^2 - rOW(3)^2)
 q1 = atan2(-rOW(2),-rOW(1));
 
 %numerical transformation matrix between origin and elbow
-T04 = [[ cos(q1)*cos(q2)*cos(q4) - cos(q1)*sin(q2)*sin(q4), - cos(q1)*cos(q2)*sin(q4) - cos(q1)*cos(q4)*sin(q2), -sin(q1), 0.102*cos(q1)*sin(q2)];
-    [ cos(q2)*cos(q4)*sin(q1) - sin(q1)*sin(q2)*sin(q4), - cos(q2)*sin(q1)*sin(q4) - cos(q4)*sin(q1)*sin(q2),  cos(q1), 0.102*sin(q1)*sin(q2)];
-    [               - cos(q2)*sin(q4) - cos(q4)*sin(q2),                   sin(q2)*sin(q4) - cos(q2)*cos(q4),        0,         0.102*cos(q2)];
+T04 = [[ cos(q1)*cos(q2)*cos(q4) - cos(q1)*sin(q2)*sin(q4), - cos(q1)*cos(q2)*sin(q4) - cos(q1)*cos(q4)*sin(q2), -sin(q1), 0.117*cos(q1)*sin(q2)];
+    [ cos(q2)*cos(q4)*sin(q1) - sin(q1)*sin(q2)*sin(q4), - cos(q2)*sin(q1)*sin(q4) - cos(q4)*sin(q1)*sin(q2),  cos(q1), 0.117*sin(q1)*sin(q2)];
+    [               - cos(q2)*sin(q4) - cos(q4)*sin(q2),                   sin(q2)*sin(q4) - cos(q2)*cos(q4),        0,         0.117*cos(q2)];
     [                                                 0,                                                   0,        0,                        1]];
 %numerical transformation between elbow and end effector
 T4E_n = T04\TOE;
@@ -100,6 +77,6 @@ end
 
 
 %convert to degrees and make between -180 and 180 before output
-jd(:, 1) = rad2deg([q1; q2; q3; q4; q5; q6; q7]);
+jd(:, 1) = rad2deg([q7; q6; q5; q4; q3; q2; q1]);
     
 end

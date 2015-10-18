@@ -2,25 +2,44 @@
 % desired end effector direction. Using the desired linear speed.
 % @param posOffset Position offset in end effector frame.
 % @param desSpeed Desired linear speed in task space (in m/s).
-function moveOfstL(posOffset, desSpeed)
+% @param config the robot's configuration: 
+% - 0 means the black gripper (2) is the base and the white gripper (1) 
+%   is the end effector.
+% - 1 means the white gripper (1) is the base and the black gripper (2) 
+%   is the end effector.
+function moveOfstL(posOffset, desSpeed, config)
     global updateRobotStatus
     global robotPos
     global robotOri
     global robotAngles
     global simulation
+    % If no config chosen use the default (0) one.
+    if (nargin < 3)
+        config = 0;
+    end
     desCurLoc = zeros(6,1);
     desCurSpe = zeros(6,1);
     desAngSpeed = [0;0;0;0;0;0;0];
     syncRobotSpeeds(desAngSpeed);
     % Update current robot location and plot.
     %updateRobotStatus();
-    [robotPos, robotOri] = fKineEu(robotAngles);
+    if(config == 0)
+        [robotPos, robotOri] = fKineEu(robotAngles);
+    else
+        [robotPos, robotOri] = fKineEuInv(robotAngles);
+    end
     curLoc = [robotPos; robotOri];
+    curPos = robotPos;
+    curOri = robotOri;
     %curLoc = desCurLoc;
     % Get desired location from offset.    
+<<<<<<< HEAD
     %[curPos,curOri] = fKineEu(offsetSimJoint(readRobotAngles));
     curPos = robotPos;
     curOri = robotOri;
+=======
+%     [curPos,curOri] = fKineEu(offsetSimJoint(readRobotAngles));
+>>>>>>> gripper
     curRotMat = eul2rotm(deg2rad(curOri'));
     % Base to end effector transformation matrix.
     T0_e = [[curRotMat(1,:),curPos(1)];
@@ -51,7 +70,13 @@ function moveOfstL(posOffset, desSpeed)
                            aCoef(i,4)*curTime^2;
         end
         % Inverse kinematics and inverse differential kinematics
-        desAngles = iKineEu(desCurLoc);
+        if(config == 0)
+            desAngles = iKineEu(desCurLoc);
+        else
+            desAngles = iKineEuInv(desCurLoc);
+        end
+        % Constrained optimization iKine
+%         desAngles = iKineEuOpti(desCurLoc, robotAngles);
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%% Not required anymore %%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -85,7 +110,13 @@ function moveOfstL(posOffset, desSpeed)
     end
     %desCurLoc
     % Inverse kinematics and inverse differential kinematics
-    desAngles = iKineEu(desCurLoc);
+    if(config == 0)
+        desAngles = iKineEu(desCurLoc);
+    else
+        desAngles = iKineEuInv(desCurLoc);
+    end 
+    % Constrained optimization iKine
+%     desAngles = iKineEuOpti(desCurLoc, robotAngles);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%% No longer needed %%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
