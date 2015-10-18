@@ -1,4 +1,4 @@
-function jd = iKineEu(pose)
+function jd = iKineEuInv(pose)
 %implements fast inverse kinematics
 %default is elbow down
 %
@@ -9,7 +9,7 @@ function jd = iKineEu(pose)
 %will cause error if in unreachable pose
 
 %initialise parameters
-[design_params, motor_origins, e_eff] = init();
+[design_params, motor_origins, e_eff] = initInv();
 
 %distance between wrist and end effector
 dE = e_eff + motor_origins(7);
@@ -52,9 +52,9 @@ q2 = 2*atan2((-d5*sin(q4) - sqrt((d3+d5*cos(q4))^2 + (-d5*sin(q4))^2 - rOW(3)^2)
 q1 = atan2(-rOW(2),-rOW(1));
 
 %numerical transformation matrix between origin and elbow
-T04 = [[ cos(q1)*cos(q2)*cos(q4) - cos(q1)*sin(q2)*sin(q4), - cos(q1)*cos(q2)*sin(q4) - cos(q1)*cos(q4)*sin(q2), -sin(q1), 0.102*cos(q1)*sin(q2)];
-    [ cos(q2)*cos(q4)*sin(q1) - sin(q1)*sin(q2)*sin(q4), - cos(q2)*sin(q1)*sin(q4) - cos(q4)*sin(q1)*sin(q2),  cos(q1), 0.102*sin(q1)*sin(q2)];
-    [               - cos(q2)*sin(q4) - cos(q4)*sin(q2),                   sin(q2)*sin(q4) - cos(q2)*cos(q4),        0,         0.102*cos(q2)];
+T04 = [[ cos(q1)*cos(q2)*cos(q4) - cos(q1)*sin(q2)*sin(q4), - cos(q1)*cos(q2)*sin(q4) - cos(q1)*cos(q4)*sin(q2), -sin(q1), 0.117*cos(q1)*sin(q2)];
+    [ cos(q2)*cos(q4)*sin(q1) - sin(q1)*sin(q2)*sin(q4), - cos(q2)*sin(q1)*sin(q4) - cos(q4)*sin(q1)*sin(q2),  cos(q1), 0.117*sin(q1)*sin(q2)];
+    [               - cos(q2)*sin(q4) - cos(q4)*sin(q2),                   sin(q2)*sin(q4) - cos(q2)*cos(q4),        0,         0.117*cos(q2)];
     [                                                 0,                                                   0,        0,                        1]];
 %numerical transformation between elbow and end effector
 T4E_n = T04\TOE;
@@ -77,6 +77,6 @@ end
 
 
 %convert to degrees and make between -180 and 180 before output
-jd(:, 1) = rad2deg([q1; q2; q3; q4; q5; q6; q7]);
+jd(:, 1) = rad2deg([q7; q6; q5; q4; q3; q2; q1]);
     
 end

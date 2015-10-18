@@ -24,7 +24,7 @@ updateRobotStatus = @updateRobotGUI;
 end
 
 % Function that draws robot and updates status.
-function updateRobotGUI()
+function updateRobotGUI(config)
 global robotAngles
 global simulation
 global robotPos
@@ -34,7 +34,15 @@ global robotOri
 % if (simulation == 0)
 %     robotAngles = offsetSimJoint(readRobotAngles());
 % end
-[robotPos, robotOri] = fKineEu(robotAngles);
+% If no config chosen use the default (0) one.
+if (nargin < 1)
+    config = 0;
+end
+if(config == 0)
+    [robotPos, robotOri] = fKineEu(robotAngles);
+else
+    [robotPos, robotOri] = fKineEuInv(robotAngles);
+end
 if(simulation == 1)
     plotRobot(robotAngles);
     plotCoord();

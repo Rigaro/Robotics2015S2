@@ -9,6 +9,8 @@
 % -prox2Sensor: Proximity sensor 2 status (far/found/inpos).
 % -grip2Close: Close gripper 2.
 % -grip2open: Open gripper 2.
+% -grip1manual: Toggle gripper 1 manual operation.
+% -grip2manual: Toggle gripper 2 manual operation.
 
 function status = handleGripper(instruction)
     global serialObj
@@ -28,6 +30,10 @@ function status = handleGripper(instruction)
         fprintf(serialObj,'%c',7);
     elseif(strcmp(instruction,'grip2Open'))
         fprintf(serialObj,'%c',8);
+    elseif(strcmp(instruction,'grip1manual'))
+        fprintf(serialObj,'%c',9);
+    elseif(strcmp(instruction,'grip2manual'))
+        fprintf(serialObj,'%c',10);
     end
     status = fscanf(serialObj);
 end

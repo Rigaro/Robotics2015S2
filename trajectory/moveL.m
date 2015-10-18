@@ -3,19 +3,33 @@
 % linear speed.
 % @param desLoc Desired location in task space.
 % @param desSpeed Desired linear speed in task space (in m/s).
-function moveL(desLoc, desSpeed)
+% @param config the robot's configuration: 
+% - 0 means the black gripper (2) is the base and the white gripper (1) 
+%   is the end effector.
+% - 1 means the white gripper (1) is the base and the black gripper (2) 
+%   is the end effector.
+function moveL(desLoc, desSpeed, config)
     global updateRobotStatus
     global robotPos
     global robotOri
     global robotAngles
     global simulation
+    % If no config chosen use the default (0) one.
+    if (nargin < 3)
+        config = 0;
+    end
     desCurLoc = zeros(6,1);
     desCurSpe = zeros(6,1);
     desAngSpeed = [0;0;0;0;0;0;0];
     syncRobotSpeeds(desAngSpeed);
     % Update current robot location and plot.
-    %updateRobotStatus();
-    [robotPos, robotOri] = fKineEu(robotAngles);
+    %updateRobotStatus();        
+    if(config == 0)
+        [robotPos, robotOri] = fKineEu(robotAngles);
+    else
+        [robotPos, robotOri] = fKineEuInv(robotAngles);
+    end
+    
     curLoc = [robotPos; robotOri];
     %curLoc = desCurLoc;
     % Obtain coefficients of cubic equations.
@@ -34,7 +48,13 @@ function moveL(desLoc, desSpeed)
                            aCoef(i,4)*curTime^2;
         end
         % Inverse kinematics and inverse differential kinematics
-        desAngles = iKineEu(desCurLoc);
+        if(config == 0)
+            desAngles = iKineEu(desCurLoc);
+        else
+            desAngles = iKineEuInv(desCurLoc);
+        end
+        % Constrained optimization iKine
+%         desAngles = iKineEuOpti(desCurLoc, robotAngles);
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%% Not required anymore %%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,9 +88,15 @@ function moveL(desLoc, desSpeed)
     end
     %desCurLoc
     % Inverse kinematics and inverse differential kinematics
-    desAngles = iKineEu(desCurLoc);
+    if(config == 0)
+        desAngles = iKineEu(desCurLoc);
+    else
+        desAngles = iKineEuInv(desCurLoc);
+    end   
+    % Constrained optimization iKine
+%     desAngles = iKineEuOpti(desCurLoc, robotAngles);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%% TO BE IMPLEMENTED %%%%%%%%%%%%%%%%
+    %%%%%%%% Not needed %%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % desAngSpeed = diffInvKine(desCurSpe);
 
