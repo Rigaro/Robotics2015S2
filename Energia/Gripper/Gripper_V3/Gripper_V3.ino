@@ -4,19 +4,20 @@
 
 #define MIN_GRIP_FORCE_V 10    //Minimum value we need to define as gripped
 #define COUNTER_FOR_UNDO 1000    //How many delay (miliseconds) we need to undo gripper
-#define PROX_FOUND_VAL 500    //Proximity sensor found value.
 
 // Communications definitions - Gripper one
 #define GRIP1_STATUS 1
 #define PROX1_SENSOR 2
 #define CLOSE1_CMD 3
 #define OPEN1_CMD 4
+#define GRIP1_MANUAL 9
 
 // Communications definitions - Gripper two
 #define GRIP2_STATUS 5
 #define PROX2_SENSOR 6
 #define CLOSE2_CMD 7
 #define OPEN2_CMD 8
+#define GRIP2_MANUAL 10
 
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
@@ -25,13 +26,8 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *motor1 = AFMS.getMotor(1);
 Adafruit_DCMotor *motor2 = AFMS.getMotor(2);
 
-boolean gripped1 = false;        //Lets us if gripper 1 is gripped
-boolean gripped2 = false;        //Lets us if gripper 2 is gripped
-int undoCounter1 = 0;         //Counter for how long we've been undoing the motor
-int undoCounter2 = 0;         //Counter for how long we've been undoing the motor
-
 // Status variables
-String gripStatus[] = {"open","open"}; //Gripper status: open, closed
+String gripStatus[] = {"open","closed"}; //Gripper status: open, closed
 String proxStatus[] = {"far","far"}; //Proximity sensor status: far, found, inpos
 
 // Pin allocation - Gripper 1
@@ -44,9 +40,16 @@ const int analogPin2 = A14;
 const int proxPin2 = 11;
 const int buttonPin2 = 12;
 
+// Push buttons
+const int forward_button = PUSH1;
+const int backward_button = PUSH2;
+
 // Grip variables
 boolean wantToGrip[] = {false,false};
 boolean wantToUngrip[] = {false,false};
+
+// Manual status variable
+boolean manualGrip[] = {false, false};
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
@@ -56,6 +59,8 @@ void setup() {
   // Pin initialization
   pinMode(buttonPin1,INPUT_PULLUP);
   pinMode(buttonPin2,INPUT_PULLUP);
+  pinMode(forward_button,INPUT_PULLUP);
+  pinMode(backward_button,INPUT_PULLUP);
   pinMode(proxPin1,INPUT);
   pinMode(proxPin2,INPUT);
 }
@@ -66,8 +71,26 @@ void loop(){
   handleSerial();
   handleGripStatus(1);
   handleGripStatus(2);
+  if(manualGrip[0] == true){
+    manualGripDrive(1);
+  }
+  if(manualGrip[1] == true){
+    manualGripDrive(2);
+  }
 }
 
+void manualGripDrive(int gripperNum) {
+    int fButton = digitalRead(forward_button);
+    int bButton = digitalRead(backward_button);
+    while(fButton == LOW){
+      runMotor(gripperNum,10,FORWARD);
+      fButton = digitalRead(forward_button);
+    }
+    while(bButton == LOW){
+      runMotor(gripperNum,10,BACKWARD);
+      bButton = digitalRead(backward_button);
+    }
+}
 // Handles and updates gripper status.
 void handleGripStatus(int gripperNum) {
   if(wantToGrip[gripperNum-1]&&(gripStatus[gripperNum-1].equals("open"))){      // wantToGrip is placeholder for incoming info
@@ -199,6 +222,12 @@ void handleSerial() {
       // Open Gripper 2.
       wantToUngrip[1] = true;
       Serial.println("ok");
+    }else if(inByte == GRIP1_MANUAL){
+      manualGrip[0] = !manualGrip[0];
+      Serial.println((String)manualGrip[0]);
+    }else if(inByte == GRIP2_MANUAL){
+      manualGrip[1] = !manualGrip[1];
+      Serial.println((String)manualGrip[1]);
     }else{
       Serial.println("No!");
     }
