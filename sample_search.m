@@ -10,7 +10,6 @@ searchOfstL([0;0;0.1],0.01,'prox1Sensor','inpos');
 % Close gripper
 initGripper('COM5',9600);
 handleGripper('grip1Close')
-endGripper();
 % Wait for gripper closed
 % Get gripper status
 gripStatus = handleGripper('grip1Status');
@@ -20,5 +19,6 @@ while(strcmp(gripStatus(1:n(1,2)-2),'open'))
 gripStatus = handleGripper('grip1Status');
 n = size(gripStatus);
 end
+endGripper();
 % moveJ([0.0384;0.1646;-0.0478;94.5957;0.5711;-179.8079],10);
 % moveOfstL([0.05;0;0],0.01);
