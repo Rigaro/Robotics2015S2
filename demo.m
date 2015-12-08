@@ -1,7 +1,7 @@
 %% Draw on face 1
 moveJ([0.0148;-0.1135;-0.0454;-176.9345;-81.7883;-4.6216],5);
 
-moveOfstL([0;0;-0.01],0.05);
+moveOfstL([0;0;-0.01],0.01);
 moveOfstL([0.03;0;0],0.05);
 moveOfstL([0;0.03;0],0.05);
 moveOfstL([-0.03;0;0],0.05);
@@ -38,18 +38,18 @@ end
 endGripper();
 %% Release gripper 2
 % Open gripper 2
-% initGripper('COM5',9600);
-% handleGripper('grip2Open')
-% % Wait for gripper closed
-% % Get gripper status
-% gripStatus = handleGripper('grip2Status');
-% n = size(gripStatus);
-% % Loop until gripper is closed
-% while(strcmp(gripStatus(1:n(1,2)-2),'closed'))
-% gripStatus = handleGripper('grip2Status');
-% n = size(gripStatus);
-% end
-% endGripper();
+initGripper('COM5',9600);
+handleGripper('grip2Open')
+% Wait for gripper closed
+% Get gripper status
+gripStatus = handleGripper('grip2Status');
+n = size(gripStatus);
+% Loop until gripper is closed
+while(strcmp(gripStatus(1:n(1,2)-2),'closed'))
+gripStatus = handleGripper('grip2Status');
+n = size(gripStatus);
+end
+endGripper();
 %
 moveOfstL([0;0;-0.06],0.05,1);
 % moveJ([-0.1424;0.1328;0.04;110;-90;160],10);
